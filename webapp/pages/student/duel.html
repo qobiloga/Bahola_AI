@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Duel - Ustoz Ko'makchi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Outfit',sans-serif; }
+        body { 
+            background: radial-gradient(circle at center, #1e1b4b, #0f0a1e); 
+            color: #fff; min-height: 100vh; display: flex; flex-direction: column; overflow: hidden;
+        }
+
+        /* ===== ARENA ===== */
+        .arena {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 30px 20px; text-align: center; position: relative;
+        }
+        
+        .vs-badge {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            font-size: 2rem; font-weight: 900; color: #f59e0b;
+            text-shadow: 0 0 20px rgba(245,158,11,0.5); z-index: 10;
+        }
+
+        .fighter {
+            display: flex; flex-direction: column; align-items: center; gap: 10px; flex: 1;
+        }
+
+        .avatar {
+            width: 80px; height: 80px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.5rem; font-weight: bold; position: relative;
+        }
+        
+        .avatar-student {
+            background: linear-gradient(135deg, #3b82f6, #0ea5e9);
+            box-shadow: 0 0 25px rgba(59,130,246,0.4);
+            border: 3px solid #60a5fa;
+        }
+
+        .avatar-ai {
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            box-shadow: 0 0 25px rgba(236,72,153,0.4);
+            border: 3px solid #f472b6;
+        }
+
+        .f-name { font-size: 1.2rem; font-weight: 700; white-space: nowrap; }
+        .f-score { font-size: 1.5rem; font-weight: 900; color: #10b981; }
+        .f-status { font-size: 0.85rem; color: #94a3b8; min-height: 18px; }
+
+        /* ===== WAITING SCREEN ===== */
+        .waiting-screen {
+            flex:1; display:flex; flex-direction:column; align-items:center;
+            justify-content:center; padding:30px; text-align:center;
+        }
+        .loader-ring {
+            width:50px; height:50px; border:4px solid rgba(255,255,255,0.1);
+            border-top-color:#f59e0b; border-radius:50%;
+            animation:spin 1s linear infinite; margin-bottom:20px;
+        }
+        @keyframes spin { to { transform:rotate(360deg); } }
+
+        /* ===== ANSWER SCREEN ===== */
+        .answer-screen { display:none; flex:1; flex-direction:column; padding:15px; }
+        
+        .a-header {
+            text-align:center; padding:10px; margin-bottom:15px;
+            background:rgba(255,255,255,0.05); border-radius:16px;
+        }
+        .a-header .q-number { font-size:0.9rem; color:#94a3b8; }
+        .a-header .q-timer-small { font-size:2rem; font-weight:900; color:#ef4444; }
+
+        .answer-grid { display:flex; flex-direction:column; gap:12px; flex:1; }
+        .answer-btn {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px; font-size: 1rem; font-weight: 600;
+            color: #fff; cursor: pointer; transition: all 0.2s;
+            display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 15px;
+            min-height: 70px; padding: 15px 20px; text-align: left;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+            width: 100%;
+        }
+        .opt-sym { 
+            font-size: 1.1rem; font-weight: 800; 
+            background: rgba(79, 70, 229, 0.2); width: 35px; height: 35px; 
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 8px; flex-shrink: 0;
+            color: #818cf8;
+            border: 1px solid rgba(79, 70, 229, 0.3);
+        }
+        .opt-label { font-size: 0.95rem; font-weight: 500; line-height: 1.3; }
+        .answer-btn:active { transform: translateY(1px); }
+        .answer-btn.selected { border: 2px solid #818cf8; transform: scale(1.02); background: rgba(30, 41, 59, 1); box-shadow: 0 0 15px rgba(79, 70, 229, 0.5); }
+        .answer-btn.disabled { opacity: 0.4; pointer-events: none; }
+        .answer-btn.correct { border: 2px solid #10b981; box-shadow: 0 0 20px rgba(16, 185, 129, 0.4); background: rgba(16, 185, 129, 0.1); }
+        .answer-btn.wrong { border: 2px solid #ef4444; opacity: 0.5; background: rgba(239, 68, 68, 0.1); }
+
+        /* ===== FEEDBACK OVERLAY ===== */
+        .feedback-overlay {
+            display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+            flex-direction:column; align-items:center; justify-content:center;
+            z-index:100; text-align:center;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        .feedback-text { font-size:2rem; font-weight:800; margin-bottom:20px; }
+        
+        .duel-results {
+            display: flex; gap: 30px; justify-content: center; align-items: center; width: 100%; padding: 0 20px;
+        }
+        .duel-card {
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px; padding: 20px; flex: 1; text-align: center;
+        }
+        .duel-card.winner { border-color: #10b981; box-shadow: 0 0 20px rgba(16,185,129,0.3); }
+        
+        .final-screen {
+            display:none; flex:1; flex-direction:column; align-items:center;
+            justify-content:center; padding:30px; text-align:center;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ARENA TOP BAR -->
+    <div class="arena" id="arenaTop">
+        <div class="fighter" id="studentFighter">
+            <div class="avatar avatar-student" id="uAvatar">👤</div>
+            <div class="f-name" id="uName">O'quvchi</div>
+            <div class="f-score" id="uScore">0</div>
+            <div class="f-status" id="uStatus">Tayyor</div>
+        </div>
+        
+        <div class="vs-badge">VS</div>
+        
+        <div class="fighter" id="aiFighter">
+            <div class="avatar avatar-ai">🤖</div>
+            <div class="f-name">Sun'iy Intellekt</div>
+            <div class="f-score" id="aiScore">0</div>
+            <div class="f-status" id="aiStatus">Kutmoqda...</div>
+        </div>
+    </div>
+
+    <!-- WAITING SCREEN -->
+    <div class="waiting-screen" id="waitingScreen">
+        <div class="loader-ring"></div>
+        <h2 style="margin-bottom: 10px;">Duel tayyorlanmoqda</h2>
+        <p style="color:#94a3b8; font-size:0.9rem;">O'qituvchi boshlashini kuting...</p>
+    </div>
+
+    <!-- ANSWER SCREEN -->
+    <div class="answer-screen" id="answerScreen">
+        <div class="a-header">
+            <div class="q-number" id="aQNum">Savol 1 / 5</div>
+            <div class="q-timer-small" id="aTimer">20</div>
+            <div style="font-size: 1.1rem; font-weight: 600; margin: 10px 0; line-height: 1.4;" id="aQuestionText">...</div>
+        </div>
+        <div class="answer-grid" id="answerGrid">
+            <button class="answer-btn" onclick="selectAnswer(0)"><span class="opt-sym">A</span><span class="opt-label" id="opt0">...</span></button>
+            <button class="answer-btn" onclick="selectAnswer(1)"><span class="opt-sym">B</span><span class="opt-label" id="opt1">...</span></button>
+            <button class="answer-btn" onclick="selectAnswer(2)"><span class="opt-sym">C</span><span class="opt-label" id="opt2">...</span></button>
+            <button class="answer-btn" onclick="selectAnswer(3)"><span class="opt-sym">D</span><span class="opt-label" id="opt3">...</span></button>
+        </div>
+    </div>
+
+    <!-- FEEDBACK OVERLAY (Round Result) -->
+    <div class="feedback-overlay" id="feedbackOverlay">
+        <div class="feedback-text" id="feedbackText">Natija</div>
+        <div class="duel-results">
+            <div class="duel-card" id="studentResCard">
+                <h3>Siz</h3>
+                <div style="font-size:3rem; margin:10px 0;" id="studentResIcon">✅</div>
+                <div id="studentResPts" style="color:#10b981; font-weight:bold;">+100</div>
+            </div>
+            <div class="duel-card" id="aiResCard">
+                <h3>AI</h3>
+                <div style="font-size:3rem; margin:10px 0;" id="aiResIcon">✅</div>
+                <div id="aiResPts" style="color:#10b981; font-weight:bold;">+100</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FINAL SCREEN -->
+    <div class="final-screen" id="finalScreen">
+        <div style="font-size:5rem; margin-bottom:15px;" id="finalEmoji">🏆</div>
+        <h2 id="finalOutcome">G'alaba!</h2>
+        <p style="color:#94a3b8; margin: 15px 0;">Yakuniy hisob:</p>
+        <div style="font-size:2rem; font-weight:800; display:flex; justify-content:center; gap:20px;">
+            <div style="color:#3b82f6">Siz: <span id="finalMyScore">0</span></div>
+            <div style="color:#ec4899">AI: <span id="finalAiScore">0</span></div>
+        </div>
+    </div>
+
+<script>
+    const studentName = localStorage.getItem('studentName') || "Talaba";
+    const activePin = localStorage.getItem('activePin') || '';
+    
+    if (!activePin) {
+        window.location.href = '/pages/student/join.html';
+    }
+
+    document.getElementById('uName').textContent = studentName;
+    document.getElementById('uAvatar').textContent = studentName.charAt(0).toUpperCase();
+
+    const API_BASE = '/api';
+
+    let myScore = 0;
+    let autoAiScore = 0; // Managed locally
+    let answered = false;
+    let aiAnswered = false;
+    let lastQuestion = -1;
+    let timerInterval = null;
+    let pollStatus = null;
+    let currentAnsIdx = -1;
+    let currentCorrectIdx = -1;
+    let aiCorrect = false;
+
+    // Poll for quiz status
+    pollStatus = setInterval(async () => {
+        try {
+            const res = await fetch(`${API_BASE}/student/get_quiz_status.php?pin=${activePin}`);
+            if (!res.ok) return;
+            const data = await res.json();
+
+            if (data.success) {
+                if (data.status === 'active' && data.current_question !== undefined) {
+                    if (data.current_question !== lastQuestion) {
+                        lastQuestion = data.current_question;
+                        showAnswerScreen(data.current_question, data.total_questions, data.question_data);
+                    }
+                } else if (data.status === 'finished') {
+                    clearInterval(pollStatus);
+                    showFinalScreen();
+                }
+            }
+        } catch (e) { console.error('Polling xatosi:', e); }
+    }, 1500);
+
+    function showAnswerScreen(qIdx, total, qData) {
+        document.getElementById('waitingScreen').style.display = 'none';
+        document.getElementById('feedbackOverlay').style.display = 'none';
+        document.getElementById('answerScreen').style.display = 'flex';
+        
+        document.getElementById('aQNum').textContent = `Savol ${qIdx + 1} / ${total}`;
+        if (qData) {
+            document.getElementById('aQuestionText').textContent = qData.question;
+            qData.options.forEach((opt, idx) => {
+                const el = document.getElementById('opt' + idx);
+                if (el) el.textContent = opt;
+            });
+            // Track internally for local AI logic
+            currentCorrectIdx = qData.correct;
+        }
+
+        answered = false;
+        aiAnswered = false;
+        currentAnsIdx = -1;
+        
+        document.getElementById('uStatus').textContent = "O'ylamoqda...";
+        document.getElementById('uStatus').style.color = "#f59e0b";
+        document.getElementById('aiStatus').textContent = "Kutmoqda...";
+        document.getElementById('aiStatus').style.color = "#94a3b8";
+
+        // Reset buttons
+        const btns = document.querySelectorAll('.answer-btn');
+        btns.forEach(btn => {
+            btn.classList.remove('selected', 'disabled', 'correct', 'wrong');
+        });
+
+        let timeLeft = 20; // Default max time per question visually
+        document.getElementById('aTimer').textContent = timeLeft;
+        if (timerInterval) clearInterval(timerInterval);
+        
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            document.getElementById('aTimer').textContent = timeLeft;
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                if (!answered) {
+                    // Time up auto fail for student
+                    answered = true;
+                    showRoundResult(false, -1);
+                }
+            }
+        }, 1000);
+    }
+
+    async function selectAnswer(optionIdx) {
+        if (answered) return;
+        answered = true;
+        currentAnsIdx = optionIdx;
+        
+        document.getElementById('uStatus').textContent = "Javob belgilandi";
+        document.getElementById('uStatus').style.color = "#10b981";
+
+        // Mark selected
+        const btns = document.querySelectorAll('.answer-btn');
+        btns.forEach((btn, i) => {
+            if (i === optionIdx) btn.classList.add('selected');
+            else btn.classList.add('disabled');
+        });
+
+        // Submit to backend
+        let myIsCorrect = false;
+        try {
+            const res = await fetch(`${API_BASE}/student/submit_answer.php`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    pin: activePin,
+                    name: studentName,
+                    question_index: lastQuestion,
+                    answer_index: optionIdx
+                })
+            });
+            if (res.ok) {
+                const data = await res.json();
+                if (data.success) {
+                    myIsCorrect = data.correct;
+                    if(data.correct_answer !== undefined) currentCorrectIdx = data.correct_answer;
+                }
+            }
+        } catch(e) {}
+
+        if (myIsCorrect) myScore += 100;
+        document.getElementById('uScore').textContent = myScore;
+
+        // Now trigger AI thinking
+        triggerAI(myIsCorrect);
+    }
+
+    function triggerAI(myIsCorrect) {
+        document.getElementById('aiStatus').textContent = "O'ylamoqda...";
+        document.getElementById('aiStatus').style.color = "#f59e0b";
+        
+        // AI Answers after 1 - 2.5 seconds
+        const delay = Math.floor(Math.random() * 1500) + 1000;
+        
+        setTimeout(() => {
+            aiAnswered = true;
+            document.getElementById('aiStatus').textContent = "Javob berdi";
+            document.getElementById('aiStatus').style.color = "#10b981";
+            
+            // AI logic: 80% chance to be correct
+            aiCorrect = (Math.random() < 0.80);
+            if (aiCorrect) autoAiScore += 100;
+            document.getElementById('aiScore').textContent = autoAiScore;
+
+            showRoundResult(myIsCorrect, currentAnsIdx);
+        }, delay);
+    }
+
+    function showRoundResult(myIsCorrect, myAnsIdx) {
+        if (timerInterval) clearInterval(timerInterval);
+
+        // Highlight correct options on board for a second optionally
+        const btns = document.querySelectorAll('.answer-btn');
+        if (myAnsIdx >= 0) {
+            btns[myAnsIdx].classList.add(myIsCorrect ? 'correct' : 'wrong');
+        }
+
+        setTimeout(() => {
+            const overlay = document.getElementById('feedbackOverlay');
+            overlay.style.display = 'flex';
+            
+            // Populate cards
+            document.getElementById('studentResIcon').textContent = myIsCorrect ? '✅' : '❌';
+            document.getElementById('studentResPts').textContent = myIsCorrect ? '+100' : '0';
+            document.getElementById('studentResPts').style.color = myIsCorrect ? '#10b981' : '#ef4444';
+            document.getElementById('studentResCard').className = 'duel-card ' + (myIsCorrect ? 'winner' : '');
+
+            document.getElementById('aiResIcon').textContent = aiCorrect ? '✅' : '❌';
+            document.getElementById('aiResPts').textContent = aiCorrect ? '+100' : '0';
+            document.getElementById('aiResPts').style.color = aiCorrect ? '#10b981' : '#ef4444';
+            document.getElementById('aiResCard').className = 'duel-card ' + (aiCorrect ? 'winner' : '');
+
+            let txt = "Tenglik";
+            if (myIsCorrect && !aiCorrect) txt = "Siz O'zdingiz!";
+            else if (!myIsCorrect && aiCorrect) txt = "AI O'zdi!";
+            else if (!myIsCorrect && !aiCorrect) txt = "Ikkalasida xato";
+            document.getElementById('feedbackText').textContent = txt;
+
+        }, 1000);
+    }
+
+    function showFinalScreen() {
+        document.getElementById('waitingScreen').style.display = 'none';
+        document.getElementById('answerScreen').style.display = 'none';
+        document.getElementById('feedbackOverlay').style.display = 'none';
+        
+        document.getElementById('finalScreen').style.display = 'flex';
+        document.getElementById('finalMyScore').textContent = myScore;
+        document.getElementById('finalAiScore').textContent = autoAiScore;
+
+        if (myScore > autoAiScore) {
+            document.getElementById('finalOutcome').textContent = "Siz G'alaba qozondingiz!";
+            document.getElementById('finalEmoji').textContent = "👑";
+            document.getElementById('finalOutcome').style.color = "#10b981";
+        } else if (myScore < autoAiScore) {
+            document.getElementById('finalOutcome').textContent = "AI G'alaba qozondi!";
+            document.getElementById('finalEmoji').textContent = "💀";
+            document.getElementById('finalOutcome').style.color = "#ef4444";
+        } else {
+            document.getElementById('finalOutcome').textContent = "Durang!";
+            document.getElementById('finalEmoji').textContent = "🤝";
+            document.getElementById('finalOutcome').style.color = "#f59e0b";
+        }
+    }
+</script>
+</body>
+</html>

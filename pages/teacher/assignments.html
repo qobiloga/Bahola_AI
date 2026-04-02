@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O'qituvchi paneli — Bahola Ai</title>
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <script src="../../assets/js/theme.js"></script>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🎓</text></svg>">
+    <style>
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+        .form-control:focus {
+            border-color: var(--accent-500);
+            outline: none;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+        }
+        .form-control option {
+            background: #1e1e2d;
+            color: #fff;
+        }
+        label {
+            display: inline-block;
+            margin-bottom: 8px;
+            color: var(--gray-300);
+            font-weight: 500;
+        }
+        .form-group {
+            margin-bottom: 24px !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="../../index.html" class="sidebar-logo">
+                    <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                        <rect width="32" height="32" rx="8" fill="url(#slg)"/>
+                        <path d="M8 20L16 10L24 20" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <defs><linearGradient id="slg" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#3b82f6"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs>
+                    </svg>
+                    Bahola <span class="text-gradient">Ai</span>
+                </a>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Asosiy</div>
+                    <a href="dashboard.html" class="sidebar-link">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                        Dashboard
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Test</div>
+                    <a href="tests.html" class="sidebar-link">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+                        Testlarim
+                        <span class="link-badge">3</span>
+                    </a>
+                    <a href="test-create.html" class="sidebar-link">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                        Yangi test
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Mustaqil ish</div>
+                    <a href="assignments.html" class="sidebar-link active">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+                        Topshiriqlar
+                    </a>
+                    <a href="paper-check.html" class="sidebar-link">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                        AI Tekshirish
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Analitika</div>
+                    <a href="students.html" class="sidebar-link">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+                        Talabalar
+                    </a>
+                    <a href="analytics.html" class="sidebar-link">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                        Statistika
+                    </a>
+                </div>
+            </nav>
+
+            <div class="sidebar-user">
+                <div class="user-avatar" id="userAvatar">SR</div>
+                <div class="user-info">
+                    <div class="user-name" id="userName">Sardor Raximov</div>
+                    <div class="user-role">O'qituvchi</div>
+                </div>
+                <button class="logout-btn" id="logoutBtn" title="Chiqish">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16,17 21,12 16,7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Top Bar -->
+            <div class="topbar">
+                <div class="topbar-left">
+                    <button class="sidebar-toggle" id="sidebarToggle">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                    </button>
+                    <div class="topbar-title">
+                        <h2>Dashboard</h2>
+                        <p>Xush kelibsiz, <span id="topbarName">Sardor</span>! 👋</p>
+                    </div>
+                </div>
+                <div class="topbar-right">
+                    <button class="notification-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+                        <span class="notification-dot"></span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Dashboard Content -->
+            <div class="dashboard-content">
+                <!-- Namunalar Section -->
+                <div class="dashboard-card animate-fade-in-up delay-1" style="margin-bottom: var(--space-6);">
+                    <div class="dashboard-card-header">
+                        <h3 class="dashboard-card-title">📝 Namunaviy topshiriqlar shablonlari</h3>
+                    </div>
+                    <div class="dashboard-card-body" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-4);">
+                        
+                        <!-- Essay Template -->
+                        <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 16px;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; gap: 8px;">
+                                <h4 style="color: var(--accent-400); font-size: 15px; margin: 0;">Essey: Sun’iy intellekt va uning imkoniyatlari</h4>
+                                <button type="button" class="btn btn-sm btn-primary" onclick="useTemplate('essay')" style="cursor: pointer; padding: 4px 8px; white-space: nowrap;">
+                                    Qo'llash
+                                </button>
+                            </div>
+                            <p style="color: var(--gray-300); font-size: 13px; margin-bottom: 8px;"><strong>AI tekshirish normalari (Rubrika):</strong></p>
+                            <pre id="sampleRubricEssay" style="background: #151521; padding: 12px; border-radius: 6px; color: var(--gray-400); font-family: inherit; font-size: 13px; white-space: pre-wrap; line-height: 1.5; margin: 0; max-height: 250px; overflow-y: auto;">Esse tuzilishi (strukturasi)
+
+Esse odatda 3 qismdan iborat bo‘ladi:
+
+1️⃣ Kirish (Introduction)
+Mavzuga kirish beriladi
+Muammo yoki savol qo‘yiladi
+Qisqacha asosiy fikr (tezis) aytiladi
+👉 Hajmi: 2–3 gap
+
+2️⃣ Asosiy qism (Body)
+Mavzu keng yoritiladi
+Dalillar, misollar keltiriladi
+Shaxsiy fikr asoslanadi
+👉 Odatda 2–3 paragraf bo‘ladi
+
+3️⃣ Xulosa (Conclusion)
+Asosiy fikrlar qisqacha takrorlanadi
+Yakuniy xulosa beriladi
+Muallifning umumiy pozitsiyasi ko‘rsatiladi
+
+Hajmi: 200–300+ so‘z</pre>
+                        </div>
+                        
+                        <!-- Antivirus Template -->
+                        <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 16px;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; gap: 8px;">
+                                <h4 style="color: var(--primary-400); font-size: 15px; margin: 0;">Mustaqil ish: Antiviruslar turlari va ahamiyati</h4>
+                                <button type="button" class="btn btn-sm btn-primary" onclick="useTemplate('antivirus')" style="cursor: pointer; padding: 4px 8px; white-space: nowrap;">
+                                    Qo'llash
+                                </button>
+                            </div>
+                            <p style="color: var(--gray-300); font-size: 13px; margin-bottom: 8px;"><strong>AI tekshirish normalari (Rubrika):</strong></p>
+                            <pre id="sampleRubricAntivirus" style="background: #151521; padding: 12px; border-radius: 6px; color: var(--gray-400); font-family: inherit; font-size: 13px; white-space: pre-wrap; line-height: 1.5; margin: 0; max-height: 250px; overflow-y: auto;">Mustaqil ish tuzilishi
+
+1️⃣ Antivirus tushunchasi
+Antivirus dasturi nima ekanligi va nima uchun kerakligi tushuntirilishi
+Viruslarning qurilmalarga yetkazadigan zararlari sanab o'tilishi
+
+2️⃣ Mashhur dasturlar tahlili
+Kamida 3 ta antivirus dasturi (masalan: Kaspersky, ESET NOD32, Windows Defender) solishtirilishi
+Ularning o'ziga xos xususiyatlari va yutuqlari keltirilishi
+
+3️⃣ Xavfsizlik qoidalari
+Internetda xavfsiz ishlash bo'yicha kamida 5 ta muhim qoida yozilishi
+Ma'lumotlarni ishonchli zaxiralash qoidalari
+
+Hajmi: kamida 150 so'z. Aniq ma'lumotlar ustunlikka ega.</pre>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <!-- Form: Topshiriq qo'shish -->
+                    <div class="dashboard-card animate-fade-in-up delay-1">
+                        <div class="dashboard-card-header">
+                            <h3 class="dashboard-card-title">➕ Yangi mustaqil ish (Topshiriq qo'shish)</h3>
+                        </div>
+                        <div class="dashboard-card-body">
+                            <form id="addAssignmentForm" method="POST" enctype="multipart/form-data">
+                                <div class="form-group" style="margin-bottom:var(--space-3)">
+                                    <label>Topshiriq nomi / Mavzusi:</label>
+                                    <input type="text" id="assignTitle" class="form-control" name="title" required placeholder="Masalan: Antiviruslar turlari">
+                                </div>
+                                <div class="form-group" style="margin-bottom:var(--space-3)">
+                                    <label>AI Tekshirish Uchun Nizom (Rubrika):</label>
+                                    <textarea id="assignRubric" class="form-control" name="rubric" rows="4" placeholder="Masalan: 3 ta reja bo'lsin, kamida 150 ta so'zdan iborat bo'lsin..."></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>Guruhni tanlang:</label>
+                                    <select id="assignGroup" class="form-control" name="group_id" required>
+                                        <option value="">Yuklanmoqda...</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Mening fanlarim:</label>
+                                    <select id="assignSubject" class="form-control" name="subject_id" required>
+                                        <option value="">Yuklanmoqda...</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" style="margin-bottom:var(--space-4)">
+                                    <label>Topshiriq fayli (PDF/Word):</label>
+                                    <br>
+                                    <input type="file" id="assignFile" name="task_file" accept=".pdf,.docx" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary" id="btnSubmitAdd">Saqlash va Qo'shish</button>
+                                <div id="addResult" style="margin-top:var(--space-3)"></div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- List: Mavjud Topshiriqlar -->
+                    <div class="dashboard-card animate-fade-in-up delay-2">
+                        <div class="dashboard-card-header">
+                            <h3 class="dashboard-card-title">📋 Mavjud topshiriqlar</h3>
+                        </div>
+                        <div class="dashboard-card-body" style="padding:0;">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Mavzu & Fan</th>
+                                        <th>Guruh</th>
+                                        <th style="width: 200px;">Topshirganlar (Progress)</th>
+                                        <th>Oxirgi muddat</th>
+                                        <th>Hujjat</th>
+                                        <th>Amal</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="assignmentsList">
+                                    <tr><td colspan="6" style="text-align:center; padding: 30px;">Yuklamoqda...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function useTemplate(type) {
+            let title = "";
+            let rubric = "";
+            if (type === 'essay') {
+                title = "Sun’iy intellekt va uning imkoniyatlari";
+                rubric = document.getElementById('sampleRubricEssay').textContent;
+            } else if (type === 'antivirus') {
+                title = "Antiviruslar turlari va ahamiyati";
+                rubric = document.getElementById('sampleRubricAntivirus').textContent;
+            }
+            document.getElementById('assignTitle').value = title;
+            document.getElementById('assignRubric').value = rubric;
+            const formObj = document.getElementById('addAssignmentForm');
+            if(formObj) {
+                formObj.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                document.getElementById('assignTitle').focus();
+            }
+        }
+
+        // Load user data
+        const user = JSON.parse(localStorage.getItem('smartedu_user') || '{}');
+        if (user.name) {
+            document.getElementById('userName').textContent = user.name;
+            document.getElementById('topbarName').textContent = user.name.split(' ')[0];
+            document.getElementById('userAvatar').textContent = user.name.split(' ').map(n => n[0]).join('').toUpperCase();
+        }
+
+        // Sidebar toggle
+        document.getElementById('sidebarToggle')?.addEventListener('click', () => {
+            document.getElementById('sidebar').classList.toggle('open');
+        });
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            localStorage.removeItem('smartedu_user');
+            window.location.href = '../auth/login.html';
+        });
+
+        // Auth check
+        if (!user.id) {
+            window.location.href = '../auth/login.html';
+        } else {
+            loadOptions();
+            loadAssignments();
+        }
+
+        async function loadOptions() {
+            try {
+                const res = await fetch(`../../api/teacher/options.php?teacher_id=${user.id || 1}`);
+                const data = await res.json();
+                if(data.success) {
+                    const subjSelect = document.getElementById('assignSubject');
+                    if(data.subjects.length > 0) {
+                        subjSelect.innerHTML = data.subjects.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+                    } else {
+                        subjSelect.innerHTML = `<option value="">Fanlar topilmadi</option>`;
+                    }
+
+                    const grpSelect = document.getElementById('assignGroup');
+                    if(data.groups.length > 0) {
+                        grpSelect.innerHTML = data.groups.map(g => `<option value="${g.id}">${g.name}</option>`).join('');
+                    } else {
+                        grpSelect.innerHTML = `<option value="">Guruhlar topilmadi</option>`;
+                    }
+                }
+            } catch(e) {
+                console.error(e);
+            }
+        }
+
+        const addForm = document.getElementById('addAssignmentForm');
+        addForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btnSubmitAdd');
+            const resDiv = document.getElementById('addResult');
+            btn.disabled = true;
+            btn.textContent = "Kuting...";
+
+            const formData = new FormData(addForm);
+            formData.append('teacher_id', user.id || 1);
+
+            try {
+                const response = await fetch('../../api/teacher/add-assignment.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+                if(result.success) {
+                    resDiv.innerHTML = `<div style="color:var(--accent-400)">✅ ${result.message}</div>`;
+                    addForm.reset();
+                    loadAssignments(); // Reload list
+                } else {
+                    resDiv.innerHTML = `<div style="color:var(--error-400)">❌ Xatolik: ${result.error}</div>`;
+                }
+            } catch(e) {
+                resDiv.innerHTML = `<div style="color:var(--error-400)">❌ Server xatosi.</div>`;
+            }
+            btn.disabled = false;
+            btn.textContent = "Saqlash va Qo'shish";
+        });
+
+        async function loadAssignments() {
+            try {
+                const res = await fetch(`../../api/teacher/assignments.php?teacher_id=${user.id || 1}`);
+                const data = await res.json();
+                
+                if(data.success) {
+                    const tbody = document.getElementById('assignmentsList');
+                    if(data.assignments && data.assignments.length > 0) {
+                        tbody.innerHTML = data.assignments.map(a => {
+                            const tot = parseInt(a.total_students) || 0;
+                            const sub = parseInt(a.submitted_count) || 0;
+                            const progress = tot > 0 ? Math.round((sub / tot) * 100) : 0;
+                            const color = progress === 100 ? 'var(--accent-500)' : (progress > 50 ? 'var(--primary-400)' : 'var(--warning-500)');
+
+                            return `
+                            <tr>
+                                <td>
+                                    <div style="font-weight: 600; color: #fff;">${a.title}</div>
+                                    <div style="font-size: var(--text-xs); color: var(--gray-400);">${a.subject_name || 'Fan tanlanmagan'}</div>
+                                </td>
+                                <td><span class="badge badge-primary">${a.group_name || 'Barchasi'}</span></td>
+                                <td>
+                                    <div style="display: flex; justify-content: space-between; font-size: var(--text-xs); margin-bottom: 4px;">
+                                        <span>${sub} / ${tot} talaba</span>
+                                        <span style="color: ${color}">${progress}%</span>
+                                    </div>
+                                    <div style="height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
+                                        <div style="height: 100%; width: ${progress}%; background: ${color}; transition: width 0.3s ease;"></div>
+                                    </div>
+                                </td>
+                                <td>${a.deadline ? new Date(a.deadline).toLocaleDateString('uz-UZ', {day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit'}) : 'Cheklanmagan'}</td>
+                                <td>
+                                    ${a.task_pdf_path ? `<a href="../..${a.task_pdf_path}" target="_blank" class="btn btn-sm" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">📥 Sahifa/PDF</a>` : `<span style="color: var(--gray-500)">Yo'q</span>`}
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-secondary" title="O'zgartirish">✏️</button>
+                                    <button class="btn btn-sm" style="color: var(--error-400)" title="O'chirish">🗑️</button>
+                                </td>
+                            </tr>
+                        `}).join('');
+                    } else {
+                        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 40px; color: var(--gray-400);">Hali topshiriqlar yaratilmagan</td></tr>`;
+                    }
+                }
+            } catch (err) {
+                console.error("Dashboard error:", err);
+            }
+        }
+        
+        // loadAssignments is already called in auth check
+    </script>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guruhga a'zo bo'lish — Bahola Ai</title>
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/auth.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🎓</text></svg>">
+    <script src="../../assets/js/theme.js"></script>
+    <style>
+        .reg-card {
+            max-width: 500px;
+            margin: 40px auto;
+            padding: 30px;
+            background: var(--surface-card);
+            border: 1px solid var(--surface-glass-border);
+            border-radius: var(--radius-2xl);
+            animation: fadeInUp 0.6s ease both;
+        }
+        .teacher-info-box {
+            background: rgba(139, 92, 246, 0.1);
+            border-left: 4px solid #8b5cf6;
+            padding: 15px;
+            border-radius: var(--radius-md);
+            margin-bottom: 25px;
+        }
+        .teacher-info-box h4 {
+            margin: 0;
+            color: #8b5cf6;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .teacher-info-box p {
+            margin: 5px 0 0;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--heading-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-effects">
+        <div class="bg-orb bg-orb-1"></div>
+        <div class="bg-orb bg-orb-2"></div>
+        <div class="bg-grid"></div>
+    </div>
+
+    <div class="auth-page">
+        <div class="auth-container">
+            <div class="reg-card">
+                <div class="auth-header">
+                    <a href="../../index.html" class="auth-logo">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                            <rect width="32" height="32" rx="8" fill="url(#lg)"/>
+                            <path d="M8 20L16 10L24 20" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <defs><linearGradient id="lg" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#3b82f6"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs>
+                        </svg>
+                        Bahola <span class="text-gradient">Ai</span>
+                    </a>
+                    <h1 class="auth-title">Guruhga qo'shilish</h1>
+                    <p class="auth-subtitle">Ma'lumotlaringizni to'ldiring va darsga qo'shiling</p>
+                </div>
+
+                <div class="teacher-info-box">
+                    <h4>Siz taklif qilindingiz:</h4>
+                    <p id="groupDisplay">Yuklanmoqda...</p>
+                    <div style="font-size: 13px; color: var(--gray-400); margin-top: 4px;">Ustoz: <span id="teacherDisplay">Sardor Raximov</span></div>
+                </div>
+
+                <form id="groupRegForm" class="auth-form">
+                    <div class="form-group">
+                        <label class="form-label">Ism familiyangiz</label>
+                        <div class="input-icon-wrapper">
+                            <span class="input-icon">👤</span>
+                            <input type="text" id="fullName" class="form-input" placeholder="Masalan: Jasur Karimov" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Yoshingiz</label>
+                            <input type="number" id="age" class="form-input" placeholder="Masalan: 19" required min="7" max="100">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Telefoningiz</label>
+                            <input type="tel" id="phone" class="form-input" placeholder="+998 90 123 45 67" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Email manzilingiz</label>
+                        <div class="input-icon-wrapper">
+                            <span class="input-icon">📧</span>
+                            <input type="email" id="email" class="form-input" placeholder="example@mail.com" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-lg auth-submit" id="submitBtn">
+                        Ro'yxatdan o'tish va qo'shilish
+                    </button>
+                </form>
+
+                <div id="successMessage" style="display:none; text-align:center; padding: 20px;">
+                    <div style="font-size: 48px; margin-bottom: 20px;">✅</div>
+                    <h2 style="color:var(--heading-color); margin-bottom: 10px;">Muvaffaqiyatli!</h2>
+                    <p style="color:var(--gray-400); margin-bottom: 25px;">Siz guruhga muvaffaqiyatli a'zo bo'ldingiz. Endi topshiriqlarni bajarishni boshlashingiz mumkin.</p>
+                    <a href="../student/dashboard.html" class="btn btn-primary">Dashboardga otish</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const groupName = urlParams.get('group') || 'Informatika-202';
+        const teacherName = urlParams.get('teacher') || 'Sardor Raximov';
+
+        document.getElementById('groupDisplay').textContent = groupName;
+        document.getElementById('teacherDisplay').textContent = teacherName;
+
+        document.getElementById('groupRegForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            btn.innerHTML = '<div class="ai-spinner" style="width:18px;height:18px;border-width:2px;"></div> Ro\'yxatga olinmoqda...';
+            btn.disabled = true;
+
+            const userData = {
+                id: 101,
+                name: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                age: document.getElementById('age').value,
+                phone: document.getElementById('phone').value,
+                role: 'student',
+                group: groupName,
+                teacher: teacherName
+            };
+
+            // Simulate API call
+            setTimeout(() => {
+                localStorage.setItem('smartedu_user', JSON.stringify(userData));
+                document.getElementById('groupRegForm').style.display = 'none';
+                document.querySelector('.auth-subtitle').style.display = 'none';
+                document.getElementById('successMessage').style.display = 'block';
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

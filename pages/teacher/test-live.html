@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Individual Test — Jonli Natijalar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Outfit',sans-serif; }
+        body { background:#0f0a1e; color:#fff; min-height:100vh; }
+
+        /* ===== LOBBY ===== */
+        .lobby-screen {
+            display:flex; flex-direction:column; align-items:center; justify-content:center;
+            min-height:100vh; padding:40px; text-align:center;
+            background: radial-gradient(ellipse at top, #1e1b4b, #0f0a1e);
+        }
+        .lobby-title { font-size:2.5rem; font-weight:800; margin-bottom:10px; }
+        .lobby-title span { background:linear-gradient(135deg,#3b82f6,#8b5cf6); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+        .lobby-subtitle { color:#94a3b8; font-size:1.1rem; margin-bottom:30px; }
+        .lobby-main { display:flex; gap:60px; align-items:flex-start; flex-wrap:wrap; justify-content:center; }
+        .qr-box {
+            background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1);
+            border-radius:24px; padding:30px; text-align:center; backdrop-filter:blur(20px);
+        }
+        .qr-box img { width:250px; height:250px; border-radius:12px; }
+        .pin-display { font-size:3rem; font-weight:900; letter-spacing:6px; margin-top:12px; color:#fff; }
+        .pin-label { font-size:0.85rem; color:#94a3b8; margin-top:5px; }
+        .players-box {
+            background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08);
+            border-radius:24px; padding:30px; min-width:350px; max-height:450px; overflow-y:auto;
+        }
+        .players-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
+        .players-header h3 { font-size:1.2rem; font-weight:700; }
+        .player-count-badge {
+            background:linear-gradient(135deg,#3b82f6,#8b5cf6); padding:6px 16px;
+            border-radius:20px; font-weight:700; font-size:0.9rem;
+        }
+        .players-grid { display:flex; flex-wrap:wrap; gap:10px; }
+        .player-tag {
+            background:rgba(255,255,255,0.08); padding:8px 16px; border-radius:12px;
+            font-size:0.95rem; font-weight:500; animation:popIn 0.3s ease;
+        }
+        @keyframes popIn { from{transform:scale(0);opacity:0;} to{transform:scale(1);opacity:1;} }
+        .btn-start {
+            margin-top:30px; background:linear-gradient(135deg,#3b82f6,#8b5cf6);
+            color:#fff; border:none; padding:18px 50px; border-radius:16px;
+            font-size:1.2rem; font-weight:700; cursor:pointer;
+            box-shadow:0 10px 30px rgba(59,130,246,0.3); transition:all 0.3s;
+        }
+        .btn-start:hover { transform:translateY(-3px); box-shadow:0 15px 40px rgba(59,130,246,0.4); }
+        .btn-start:disabled { opacity:0.4; cursor:not-allowed; transform:none; }
+
+        /* ===== MONITORING SCREEN ===== */
+        .monitor-screen { display:none; min-height:100vh; }
+        .monitor-topbar {
+            display:flex; justify-content:space-between; align-items:center;
+            padding:20px 40px; background:rgba(0,0,0,0.4); border-bottom:1px solid rgba(255,255,255,0.06);
+        }
+        .monitor-topbar h2 { font-size:1.4rem; font-weight:700; }
+        .monitor-topbar h2 span { color:#60a5fa; }
+        .monitor-stats { display:flex; gap:30px; }
+        .monitor-stat { text-align:center; }
+        .monitor-stat .val { font-size:1.8rem; font-weight:900; }
+        .monitor-stat .val.green { color:#10b981; }
+        .monitor-stat .val.blue { color:#60a5fa; }
+        .monitor-stat .val.amber { color:#f59e0b; }
+        .monitor-stat .lbl { font-size:0.75rem; color:#64748b; margin-top:2px; }
+
+        .monitor-body { padding:30px 40px; }
+        .monitor-grid { display:grid; grid-template-columns: 1fr 1fr; gap:24px; margin-bottom:24px; }
+        .monitor-card {
+            background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08);
+            border-radius:20px; padding:24px; overflow:hidden;
+        }
+        .monitor-card h3 { font-size:1rem; font-weight:700; margin-bottom:16px; color:#e2e8f0; }
+        
+        .student-row {
+            display:flex; align-items:center; gap:14px; padding:12px 16px;
+            background:rgba(255,255,255,0.03); border-radius:12px; margin-bottom:8px;
+            border:1px solid rgba(255,255,255,0.05); transition:all 0.3s;
+        }
+        .student-row.done { border-color:rgba(16,185,129,0.3); }
+        .student-row.in-progress { border-color:rgba(245,158,11,0.3); }
+        .student-rank {
+            width:32px; height:32px; border-radius:8px; display:flex; align-items:center;
+            justify-content:center; font-weight:800; font-size:0.9rem; background:rgba(255,255,255,0.08);
+        }
+        .student-rank.r1 { background:linear-gradient(135deg,#f59e0b,#d97706); }
+        .student-rank.r2 { background:linear-gradient(135deg,#94a3b8,#64748b); }
+        .student-rank.r3 { background:linear-gradient(135deg,#b45309,#92400e); }
+        .student-name { flex:1; font-weight:600; font-size:0.95rem; }
+        .student-progress {
+            width:120px; height:8px; background:rgba(255,255,255,0.08); border-radius:10px; overflow:hidden;
+        }
+        .student-progress-bar { height:100%; border-radius:10px; transition:width 0.5s ease; }
+        .student-progress-bar.good { background:linear-gradient(90deg,#10b981,#059669); }
+        .student-progress-bar.mid { background:linear-gradient(90deg,#f59e0b,#d97706); }
+        .student-progress-bar.low { background:linear-gradient(90deg,#ef4444,#dc2626); }
+        .student-score { font-weight:800; color:#10b981; font-size:1rem; min-width:60px; text-align:right; }
+        .student-detail { font-size:0.8rem; color:#64748b; min-width:80px; text-align:right; }
+        .student-status {
+            font-size:0.7rem; font-weight:700; padding:4px 10px; border-radius:8px;
+        }
+        .student-status.active { background:rgba(245,158,11,0.15); color:#f59e0b; }
+        .student-status.completed { background:rgba(16,185,129,0.15); color:#10b981; }
+
+        .question-mini {
+            display:flex; align-items:center; gap:10px; padding:10px 14px;
+            background:rgba(255,255,255,0.03); border-radius:10px; margin-bottom:6px;
+            font-size:0.85rem; color:#cbd5e1;
+        }
+        .question-mini .q-idx {
+            width:28px; height:28px; border-radius:8px; display:flex; align-items:center;
+            justify-content:center; font-weight:800; font-size:0.8rem; flex-shrink:0;
+            background:rgba(59,130,246,0.15); color:#60a5fa;
+        }
+        .question-mini .q-correct { margin-left:auto; font-weight:700; color:#10b981; font-size:0.85rem; }
+
+        /* ===== RESULTS SCREEN ===== */
+        .results-screen { display:none; min-height:100vh; padding:40px; }
+        .results-header { text-align:center; margin-bottom:40px; }
+        .results-header h1 { font-size:2.5rem; font-weight:900; margin-bottom:6px; }
+        .results-header h1 span { background:linear-gradient(135deg,#3b82f6,#8b5cf6); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+        .results-header p { color:#94a3b8; font-size:1rem; }
+
+        .results-summary {
+            display:grid; grid-template-columns: repeat(4, 1fr); gap:20px;
+            max-width:900px; margin:0 auto 40px;
+        }
+        .summary-card {
+            background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08);
+            border-radius:16px; padding:24px; text-align:center;
+        }
+        .summary-card .icon { font-size:2rem; margin-bottom:8px; }
+        .summary-card .value { font-size:2rem; font-weight:900; color:#e2e8f0; }
+        .summary-card .label { font-size:0.8rem; color:#64748b; margin-top:4px; }
+
+        .results-table-container {
+            max-width:1000px; margin:0 auto; background:rgba(255,255,255,0.03);
+            border:1px solid rgba(255,255,255,0.08); border-radius:20px; overflow:hidden;
+        }
+        .results-table { width:100%; border-collapse:collapse; }
+        .results-table th {
+            text-align:left; padding:14px 20px; font-size:0.8rem; color:#64748b;
+            text-transform:uppercase; letter-spacing:1px; border-bottom:1px solid rgba(255,255,255,0.06);
+            background:rgba(0,0,0,0.2);
+        }
+        .results-table td {
+            padding:14px 20px; font-size:0.9rem; color:#cbd5e1;
+            border-bottom:1px solid rgba(255,255,255,0.03);
+        }
+        .results-table tr:hover td { background:rgba(255,255,255,0.02); }
+
+        .grade-badge {
+            display:inline-block; padding:4px 12px; border-radius:8px; font-weight:700; font-size:0.8rem;
+        }
+        .grade-badge.a { background:rgba(16,185,129,0.15); color:#10b981; }
+        .grade-badge.b { background:rgba(59,130,246,0.15); color:#60a5fa; }
+        .grade-badge.c { background:rgba(245,158,11,0.15); color:#f59e0b; }
+        .grade-badge.d { background:rgba(244,63,94,0.15); color:#f43f5e; }
+
+        .results-actions {
+            display:flex; justify-content:center; gap:16px; margin-top:30px;
+        }
+        .btn-action {
+            padding:14px 32px; border-radius:14px; font-size:1rem; font-weight:700;
+            border:none; cursor:pointer; transition:all 0.3s; display:flex; align-items:center; gap:8px;
+        }
+        .btn-pdf { background:linear-gradient(135deg,#ef4444,#dc2626); color:#fff; }
+        .btn-pdf:hover { transform:translateY(-2px); box-shadow:0 8px 25px rgba(239,68,68,0.3); }
+        .btn-back { background:rgba(255,255,255,0.08); color:#e2e8f0; border:1px solid rgba(255,255,255,0.1); }
+        .btn-back:hover { background:rgba(255,255,255,0.12); }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeInUp { from{opacity:0;transform:translateY(20px);} to{opacity:1;transform:translateY(0);} }
+        .animate-in { animation: fadeInUp 0.5s ease forwards; }
+        .pulse { animation: pulse 2s infinite; }
+        @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.6;} }
+    </style>
+</head>
+<body>
+
+    <!-- PHASE 1: LOBBY -->
+    <div class="lobby-screen" id="lobbyScreen">
+        <h1 class="lobby-title">📝 Individual <span>Test</span></h1>
+        <p class="lobby-subtitle" id="lobbyTopic">Mavzu yuklanmoqda...</p>
+        
+        <div class="lobby-main">
+            <div class="qr-box">
+                <img id="lobbyQR" src="" alt="QR Code">
+                <div class="pin-display" id="lobbyPin">--- ---</div>
+                <div class="pin-label">PIN-kodni kiriting yoki QR-ni skanerlang</div>
+            </div>
+            <div class="players-box">
+                <div class="players-header">
+                    <h3>👥 Ishtirokchilar</h3>
+                    <div class="player-count-badge" id="lobbyCount">0 ta</div>
+                </div>
+                <div class="players-grid" id="playersGrid"></div>
+            </div>
+        </div>
+        
+        <button class="btn-start" id="btnStart" disabled onclick="startTest()">
+            ▶ Testni Boshlash
+        </button>
+    </div>
+
+    <!-- PHASE 2: MONITORING -->
+    <div class="monitor-screen" id="monitorScreen">
+        <div class="monitor-topbar">
+            <div>
+                <h2>📝 <span id="monitorTopic">Test</span></h2>
+                <div style="font-size:0.85rem; color:#64748b; margin-top:4px;">O'quvchilar ishlayapti — <span class="pulse" style="color:#f59e0b;">Jonli</span></div>
+            </div>
+            <div class="monitor-stats">
+                <div class="monitor-stat">
+                    <div class="val blue" id="monStatTotal">0</div>
+                    <div class="lbl">Jami o'quvchi</div>
+                </div>
+                <div class="monitor-stat">
+                    <div class="val amber" id="monStatActive">0</div>
+                    <div class="lbl">Ishlayapti</div>
+                </div>
+                <div class="monitor-stat">
+                    <div class="val green" id="monStatDone">0</div>
+                    <div class="lbl">Tugatdi</div>
+                </div>
+            </div>
+            <button class="btn-start" style="padding:12px 30px; font-size:1rem;" id="btnFinish" onclick="finishTest()">
+                ✅ Testni Yakunlash
+            </button>
+        </div>
+        <div class="monitor-body">
+            <div class="monitor-grid">
+                <div class="monitor-card" style="max-height:500px; overflow-y:auto;">
+                    <h3>🏆 Reyting (Jonli)</h3>
+                    <div id="liveRanking"></div>
+                </div>
+                <div class="monitor-card" style="max-height:500px; overflow-y:auto;">
+                    <h3>📋 Savollar statistikasi</h3>
+                    <div id="questionStats"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PHASE 3: RESULTS -->
+    <div class="results-screen" id="resultsScreen">
+        <div class="results-header animate-in">
+            <h1>📊 Test <span>natijalari</span></h1>
+            <p id="resultsTopic">Mavzu</p>
+        </div>
+
+        <div class="results-summary animate-in" id="resultsSummary">
+            <div class="summary-card">
+                <div class="icon">👥</div>
+                <div class="value" id="resTotalStudents">0</div>
+                <div class="label">Jami ishtirokchi</div>
+            </div>
+            <div class="summary-card">
+                <div class="icon">📊</div>
+                <div class="value" id="resAvgScore">0%</div>
+                <div class="label">O'rtacha natija</div>
+            </div>
+            <div class="summary-card">
+                <div class="icon">🏆</div>
+                <div class="value" id="resTopScore">0</div>
+                <div class="label">Eng yuqori ball</div>
+            </div>
+            <div class="summary-card">
+                <div class="icon">⏱️</div>
+                <div class="value" id="resAvgTime">0s</div>
+                <div class="label">O'rtacha vaqt</div>
+            </div>
+        </div>
+
+        <div class="results-table-container animate-in">
+            <table class="results-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>O'quvchi</th>
+                        <th>To'g'ri</th>
+                        <th>Ball</th>
+                        <th>Vaqt</th>
+                        <th>Foiz</th>
+                        <th>Baho</th>
+                    </tr>
+                </thead>
+                <tbody id="resultsBody"></tbody>
+            </table>
+        </div>
+
+        <div class="results-actions animate-in">
+            <button class="btn-action btn-pdf" onclick="exportPDF()">📄 PDF Eksport</button>
+            <button class="btn-action btn-back" onclick="window.location.href='dashboard.html'">🏠 Dashboard</button>
+        </div>
+    </div>
+
+<script>
+    const quizData = JSON.parse(localStorage.getItem('currentQuizData'));
+    if (!quizData) {
+        alert("Test ma'lumotlari topilmadi.");
+        window.location.href = 'dashboard.html';
+    }
+
+    const pin = quizData.pin;
+    const topic = quizData.topic;
+    const questions = quizData.questions;
+    let knownPlayers = [];
+    let finalResults = [];
+    let pollInterval = null;
+    let monitorInterval = null;
+
+    // ===== LOBBY =====
+    document.getElementById('lobbyTopic').textContent = `Mavzu: ${topic}`;
+    document.getElementById('lobbyPin').textContent = pin.toString().replace(/(\d{3})(\d{3})/, '$1 $2');
+    
+    const joinUrl = new URL('../../pages/student/join.html', window.location.href);
+    joinUrl.searchParams.set('pin', pin);
+    document.getElementById('lobbyQR').src = `https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=${encodeURIComponent(joinUrl.toString())}`;
+
+    pollInterval = setInterval(async () => {
+        try {
+            const res = await fetch(`../../api/teacher/get_quiz_players.php?pin=${pin}`);
+            const data = await res.json();
+            if (data.success) {
+                document.getElementById('lobbyCount').textContent = data.count + ' ta';
+                data.players.forEach(p => {
+                    if (!knownPlayers.includes(p.student_name)) {
+                        knownPlayers.push(p.student_name);
+                        const tag = document.createElement('div');
+                        tag.className = 'player-tag';
+                        tag.textContent = p.student_name;
+                        document.getElementById('playersGrid').appendChild(tag);
+                    }
+                });
+                document.getElementById('btnStart').disabled = data.count < 1;
+            }
+        } catch (e) {}
+    }, 1500);
+
+    // ===== START TEST =====
+    async function startTest() {
+        clearInterval(pollInterval);
+        
+        try {
+            await fetch('../../api/teacher/update_quiz_status.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ pin: pin, status: 'active', current_question: 0 })
+            });
+        } catch(e) {}
+
+        document.getElementById('lobbyScreen').style.display = 'none';
+        document.getElementById('monitorScreen').style.display = 'block';
+        document.getElementById('monitorTopic').textContent = topic;
+
+        // Render question stats template
+        renderQuestionStats();
+
+        // Start monitoring
+        monitorInterval = setInterval(monitorStudents, 1500);
+        monitorStudents();
+    }
+
+    function renderQuestionStats() {
+        const container = document.getElementById('questionStats');
+        container.innerHTML = questions.map((q, i) => `
+            <div class="question-mini" id="qstat_${i}">
+                <div class="q-idx">${i + 1}</div>
+                <div style="flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${q.question}</div>
+                <div class="q-correct" id="qcorrect_${i}">—</div>
+            </div>
+        `).join('');
+    }
+
+    async function monitorStudents() {
+        try {
+            const res = await fetch(`../../api/teacher/get_quiz_players.php?pin=${pin}`);
+            const data = await res.json();
+            if (!data.success) return;
+
+            const players = data.players || [];
+            const sorted = [...players].sort((a, b) => (b.score || 0) - (a.score || 0));
+
+            // Update stats
+            const totalCount = sorted.length;
+            const doneCount = sorted.filter(p => (p.correct_answers || 0) >= questions.length || p.finished).length;
+            const activeCount = totalCount - doneCount;
+
+            document.getElementById('monStatTotal').textContent = totalCount;
+            document.getElementById('monStatActive').textContent = activeCount;
+            document.getElementById('monStatDone').textContent = doneCount;
+
+            // Render ranking
+            const rankClasses = ['r1', 'r2', 'r3'];
+            document.getElementById('liveRanking').innerHTML = sorted.map((p, i) => {
+                const answered = parseInt(p.correct_answers || 0);
+                const total = questions.length;
+                const pct = Math.round((answered / total) * 100);
+                const isFinished = answered >= total || p.finished;
+                const barClass = pct >= 70 ? 'good' : pct >= 40 ? 'mid' : 'low';
+
+                return `
+                    <div class="student-row ${isFinished ? 'done' : 'in-progress'}">
+                        <div class="student-rank ${rankClasses[i] || ''}">${i + 1}</div>
+                        <div class="student-name">${p.student_name}</div>
+                        <div class="student-progress">
+                            <div class="student-progress-bar ${barClass}" style="width:${pct}%"></div>
+                        </div>
+                        <div class="student-detail">${answered}/${total} savol</div>
+                        <div class="student-score">${p.score || 0}</div>
+                        <div class="student-status ${isFinished ? 'completed' : 'active'}">
+                            ${isFinished ? '✅ Tugatdi' : '⏳ Ishlayapti'}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Store for results
+            finalResults = sorted;
+
+        } catch (e) { console.error(e); }
+    }
+
+    // ===== FINISH TEST =====
+    async function finishTest() {
+        if (!confirm("Testni yakunlashni xohlaysizmi?")) return;
+
+        clearInterval(monitorInterval);
+
+        try {
+            await fetch('../../api/teacher/update_quiz_status.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ pin: pin, status: 'finished' })
+            });
+        } catch(e) {}
+
+        // Get final data
+        try {
+            const res = await fetch(`../../api/teacher/get_quiz_players.php?pin=${pin}`);
+            const data = await res.json();
+            if (data.success) {
+                finalResults = [...data.players].sort((a, b) => (b.score || 0) - (a.score || 0));
+            }
+        } catch(e) {}
+
+        // Save to history
+        if (finalResults.length > 0) {
+            try {
+                await fetch('../../api/teacher/finalize_game.php', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        pin: pin,
+                        results: {
+                            winner: finalResults[0].student_name,
+                            top_score: finalResults[0].score,
+                            players_count: finalResults.length,
+                            avg_score: Math.round(finalResults.reduce((s, p) => s + (p.score || 0), 0) / finalResults.length)
+                        }
+                    })
+                });
+            } catch(e) {}
+        }
+
+        showResults();
+    }
+
+    function showResults() {
+        document.getElementById('monitorScreen').style.display = 'none';
+        document.getElementById('resultsScreen').style.display = 'block';
+        document.getElementById('resultsTopic').textContent = `${topic} · ${questions.length} savol · ${new Date().toLocaleDateString('uz-UZ')}`;
+
+        const total = finalResults.length;
+        const totalScore = finalResults.reduce((s, p) => s + (p.score || 0), 0);
+        const avgScore = total > 0 ? Math.round(totalScore / total) : 0;
+        const topScore = total > 0 ? Math.max(...finalResults.map(p => p.score || 0)) : 0;
+        const totalTime = finalResults.reduce((s, p) => s + parseFloat(p.total_time || 0), 0);
+        const avgTime = total > 0 ? (totalTime / total).toFixed(1) : 0;
+        const avgPct = total > 0 ? Math.round(finalResults.reduce((s, p) => s + ((p.correct_answers || 0) / questions.length * 100), 0) / total) : 0;
+
+        document.getElementById('resTotalStudents').textContent = total;
+        document.getElementById('resAvgScore').textContent = avgPct + '%';
+        document.getElementById('resTopScore').textContent = topScore;
+        document.getElementById('resAvgTime').textContent = avgTime + 's';
+
+        // Render table
+        const tbody = document.getElementById('resultsBody');
+        tbody.innerHTML = finalResults.map((p, i) => {
+            const correct = parseInt(p.correct_answers || 0);
+            const wrong = questions.length - correct;
+            const pct = Math.round((correct / questions.length) * 100);
+            const time = parseFloat(p.total_time || 0).toFixed(1);
+            const grade = getGrade(pct);
+
+            return `
+                <tr>
+                    <td><strong>${i + 1}</strong></td>
+                    <td><strong>${p.student_name}</strong></td>
+                    <td>✅ ${correct} / ❌ ${wrong}</td>
+                    <td style="font-weight:800; color:#10b981;">${p.score || 0}</td>
+                    <td>⏱️ ${time}s</td>
+                    <td style="font-weight:700;">${pct}%</td>
+                    <td><span class="grade-badge ${grade.cls}">${grade.text}</span></td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    function getGrade(pct) {
+        if (pct >= 86) return { text: "A'lo", cls: 'a' };
+        if (pct >= 71) return { text: "Yaxshi", cls: 'b' };
+        if (pct >= 56) return { text: "Qoniqarli", cls: 'c' };
+        return { text: "Qoniqarsiz", cls: 'd' };
+    }
+
+    // ===== PDF EXPORT =====
+    function exportPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF('p', 'mm', 'a4');
+
+        // Header
+        doc.setFontSize(18);
+        doc.setTextColor(30, 30, 60);
+        doc.text('Bahola Ai — Test Natijalari', 105, 20, { align: 'center' });
+
+        doc.setFontSize(11);
+        doc.setTextColor(100, 100, 120);
+        doc.text(`Mavzu: ${topic}`, 105, 28, { align: 'center' });
+        doc.text(`Sana: ${new Date().toLocaleDateString('uz-UZ')} | Savollar: ${questions.length} ta | Ishtirokchilar: ${finalResults.length} ta`, 105, 34, { align: 'center' });
+
+        // Summary
+        const total = finalResults.length;
+        const avgPct = total > 0 ? Math.round(finalResults.reduce((s, p) => s + ((p.correct_answers || 0) / questions.length * 100), 0) / total) : 0;
+        const topScore = total > 0 ? Math.max(...finalResults.map(p => p.score || 0)) : 0;
+
+        doc.setFontSize(10);
+        doc.setTextColor(60, 60, 80);
+        doc.text(`O'rtacha natija: ${avgPct}%   |   Eng yuqori ball: ${topScore}`, 105, 42, { align: 'center' });
+
+        // Table
+        const tableData = finalResults.map((p, i) => {
+            const correct = parseInt(p.correct_answers || 0);
+            const pct = Math.round((correct / questions.length) * 100);
+            const grade = getGrade(pct);
+            return [
+                i + 1,
+                p.student_name,
+                `${correct} / ${questions.length}`,
+                p.score || 0,
+                parseFloat(p.total_time || 0).toFixed(1) + 's',
+                pct + '%',
+                grade.text
+            ];
+        });
+
+        doc.autoTable({
+            startY: 48,
+            head: [['#', "O'quvchi", "To'g'ri", 'Ball', 'Vaqt', 'Foiz', 'Baho']],
+            body: tableData,
+            theme: 'grid',
+            headStyles: { fillColor: [59, 130, 246], textColor: 255, fontSize: 9, fontStyle: 'bold' },
+            bodyStyles: { fontSize: 9, textColor: [40, 40, 60] },
+            alternateRowStyles: { fillColor: [245, 247, 252] },
+            columnStyles: {
+                0: { halign: 'center', cellWidth: 10 },
+                3: { halign: 'center', fontStyle: 'bold' },
+                4: { halign: 'center' },
+                5: { halign: 'center', fontStyle: 'bold' },
+                6: { halign: 'center' }
+            },
+            margin: { left: 14, right: 14 }
+        });
+
+        // Footer
+        const pageCount = doc.internal.getNumberOfPages();
+        for (let i = 1; i <= pageCount; i++) {
+            doc.setPage(i);
+            doc.setFontSize(8);
+            doc.setTextColor(150);
+            doc.text(`Bahola Ai Platform — ${new Date().toLocaleString('uz-UZ')}`, 105, doc.internal.pageSize.height - 10, { align: 'center' });
+        }
+
+        doc.save(`Test_${topic.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0,10)}.pdf`);
+    }
+</script>
+</body>
+</html>

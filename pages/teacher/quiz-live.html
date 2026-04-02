@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Viktorina — Bahola Ai</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Outfit',sans-serif; }
+        body { background:#0f0a1e; color:#fff; min-height:100vh; overflow:hidden; }
+
+        /* LOBBY */
+        .lobby-screen { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100vh; padding:40px; text-align:center; background:radial-gradient(ellipse at top,#1e1b4b,#0f0a1e); }
+        .lobby-title { font-size:2.5rem; font-weight:800; margin-bottom:10px; }
+        .lobby-title span { background:linear-gradient(135deg,#818cf8,#06b6d4); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+        .lobby-subtitle { color:#94a3b8; font-size:1.1rem; margin-bottom:30px; }
+        .lobby-main { display:flex; gap:60px; align-items:flex-start; flex-wrap:wrap; justify-content:center; }
+        .qr-box { background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:24px; padding:30px; text-align:center; backdrop-filter:blur(20px); }
+        .qr-box img { width:260px; height:260px; border-radius:12px; }
+        .pin-display { font-size:3rem; font-weight:900; letter-spacing:8px; margin-top:12px; }
+        .pin-label { font-size:0.9rem; color:#94a3b8; margin-top:5px; }
+        .players-box { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:24px; padding:30px; min-width:320px; max-height:480px; overflow-y:auto; }
+        .players-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
+        .players-header h3 { font-size:1.2rem; font-weight:700; }
+        .player-count-badge { background:linear-gradient(135deg,#10b981,#3b82f6); padding:6px 16px; border-radius:20px; font-weight:700; font-size:0.9rem; }
+        .players-grid { display:flex; flex-wrap:wrap; gap:10px; }
+        .player-tag { background:rgba(255,255,255,0.08); padding:8px 14px; border-radius:12px; font-size:0.9rem; font-weight:500; animation:popIn 0.3s ease; }
+        @keyframes popIn { from{transform:scale(0);opacity:0;} to{transform:scale(1);opacity:1;} }
+        .btn-start { margin-top:30px; background:linear-gradient(135deg,#10b981,#059669); color:#fff; border:none; padding:16px 50px; border-radius:16px; font-size:1.2rem; font-weight:700; cursor:pointer; box-shadow:0 10px 30px rgba(16,185,129,0.3); transition:all 0.3s; }
+        .btn-start:hover { transform:translateY(-2px); }
+        .btn-start:disabled { opacity:0.4; cursor:not-allowed; transform:none; }
+
+        /* QUESTION SCREEN */
+        .question-screen { display:none; height:100vh; flex-direction:column; overflow:hidden; }
+
+        .q-topbar { display:flex; justify-content:space-between; align-items:center; padding:14px 30px; background:rgba(0,0,0,0.35); border-bottom:1px solid rgba(255,255,255,0.05); flex-shrink:0; }
+        .q-num { font-size:1rem; font-weight:600; color:#94a3b8; }
+        .q-topic { font-size:0.85rem; color:#475569; }
+
+        .live-pill { display:flex; align-items:center; gap:8px; padding:7px 16px; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.08); border-radius:20px; }
+        .live-dot { width:8px; height:8px; background:#10b981; border-radius:50%; animation:blink 1.2s infinite; }
+        @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.2;} }
+        .live-label { font-size:0.8rem; font-weight:700; color:#94a3b8; }
+        .live-progress { font-size:0.9rem; font-weight:800; color:#10b981; }
+
+        /* Fallback timer bar */
+        .timer-bar-wrap { height:4px; background:rgba(255,255,255,0.06); position:relative; flex-shrink:0; }
+        .timer-bar { height:100%; background:linear-gradient(90deg,#3b82f6,#8b5cf6); transition:width 1s linear; }
+
+        .q-body { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:30px; text-align:center; overflow:hidden; }
+        .q-text { font-size:2.4rem; font-weight:800; line-height:1.3; max-width:860px; margin-bottom:36px; }
+        .q-options { display:grid; grid-template-columns:1fr 1fr; gap:18px; width:100%; max-width:860px; }
+        .q-option { padding:22px 26px; border-radius:14px; font-size:1.2rem; font-weight:700; display:flex; align-items:center; gap:14px; position:relative; transition:all 0.3s; border:2px solid transparent; }
+        .q-option:nth-child(1) { background:#be123c; }
+        .q-option:nth-child(2) { background:#1d4ed8; }
+        .q-option:nth-child(3) { background:#b45309; }
+        .q-option:nth-child(4) { background:#047857; }
+        .q-option.correct-opt { border-color:#fff !important; box-shadow:0 0 24px rgba(255,255,255,0.2); transform:scale(1.03); }
+        .q-option.dim-opt { opacity:0.35; }
+        .opt-letter { width:36px; height:36px; background:rgba(0,0,0,0.25); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
+        .opt-badge { position:absolute; right:14px; top:50%; transform:translateY(-50%); font-size:0.8rem; background:rgba(0,0,0,0.35); padding:3px 10px; border-radius:8px; font-weight:700; }
+
+        /* Student status */
+        .st-bar { padding:10px 30px; background:rgba(0,0,0,0.3); display:flex; flex-wrap:wrap; gap:7px; align-items:center; flex-shrink:0; border-top:1px solid rgba(255,255,255,0.04); min-height:52px; }
+        .st-chip { padding:5px 12px; border-radius:9px; font-size:0.75rem; font-weight:600; transition:all 0.4s; }
+        .st-chip.waiting { background:rgba(245,158,11,0.12); color:#f59e0b; border:1px solid rgba(245,158,11,0.2); }
+        .st-chip.done { background:rgba(16,185,129,0.15); color:#10b981; border:1px solid rgba(16,185,129,0.3); }
+
+        /* Result panel (slides up) */
+        .result-panel { display:none; position:absolute; bottom:0; left:0; right:0; background:rgba(10,6,20,0.97); border-top:1px solid rgba(255,255,255,0.08); padding:24px 40px 28px; z-index:30; }
+        .result-panel h3 { font-size:1rem; color:#64748b; margin-bottom:16px; font-weight:600; }
+        .bar-row { display:flex; gap:16px; align-items:flex-end; height:120px; margin-bottom:12px; }
+        .bar-col { flex:1; display:flex; flex-direction:column; align-items:center; position:relative; }
+        .bar-fill { width:100%; border-radius:8px 8px 0 0; transition:height 0.7s cubic-bezier(0.34,1.56,0.64,1); display:flex; align-items:flex-start; justify-content:center; padding-top:6px; }
+        .bar-fill span { font-size:0.8rem; font-weight:800; color:#fff; }
+        .bar-label { margin-top:8px; font-size:0.75rem; color:#64748b; font-weight:700; }
+        .bar-count { font-size:0.85rem; color:#e2e8f0; font-weight:700; }
+        .result-footer { display:flex; justify-content:space-between; align-items:center; }
+        .result-correct-info { font-size:0.9rem; color:#94a3b8; }
+        .result-correct-info strong { color:#10b981; }
+        .btn-next-q { background:linear-gradient(135deg,#3b82f6,#8b5cf6); color:#fff; border:none; padding:12px 36px; border-radius:12px; font-size:1rem; font-weight:700; cursor:pointer; transition:all 0.3s; }
+        .btn-next-q:hover { transform:translateY(-1px); box-shadow:0 8px 24px rgba(59,130,246,0.3); }
+
+        /* SCOREBOARD */
+        .scoreboard-screen { display:none; min-height:100vh; flex-direction:column; align-items:center; justify-content:center; padding:40px; overflow-y:auto; }
+        .scoreboard-screen h2 { font-size:2.8rem; font-weight:900; margin-bottom:8px; }
+        .scoreboard-screen h2 span { background:linear-gradient(135deg,#f59e0b,#ef4444); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+        .sb-sub { font-size:0.95rem; color:#94a3b8; margin-bottom:24px; }
+        .summary-row { display:flex; gap:16px; margin-bottom:28px; justify-content:center; flex-wrap:wrap; }
+        .summary-box { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:18px 26px; text-align:center; min-width:130px; }
+        .summary-box .sv { font-size:1.7rem; font-weight:900; }
+        .summary-box .sv.g { color:#10b981; }
+        .summary-box .sv.b { color:#60a5fa; }
+        .summary-box .sl { font-size:0.72rem; color:#64748b; margin-top:3px; }
+        .score-list { width:100%; max-width:680px; }
+        .score-row { display:flex; align-items:center; gap:14px; padding:14px 20px; background:rgba(255,255,255,0.04); border-radius:12px; margin-bottom:8px; border:1px solid rgba(255,255,255,0.07); }
+        .score-rank { width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:1.1rem; }
+        .score-rank.gold { background:linear-gradient(135deg,#f59e0b,#d97706); }
+        .score-rank.silver { background:linear-gradient(135deg,#94a3b8,#64748b); }
+        .score-rank.bronze { background:linear-gradient(135deg,#b45309,#92400e); }
+        .score-rank.normal { background:rgba(255,255,255,0.08); }
+        .score-name { flex:1; font-size:1rem; font-weight:600; }
+        .score-pts { font-size:1.2rem; font-weight:800; color:#10b981; }
+        .sb-actions { display:flex; gap:14px; margin-top:28px; }
+        .btn-act { padding:13px 30px; border-radius:12px; font-size:0.95rem; font-weight:700; border:none; cursor:pointer; transition:all 0.3s; display:flex; align-items:center; gap:7px; }
+        .btn-pdf { background:linear-gradient(135deg,#ef4444,#dc2626); color:#fff; }
+        .btn-pdf:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(239,68,68,0.3); }
+        .btn-back { background:rgba(255,255,255,0.07); color:#e2e8f0; border:1px solid rgba(255,255,255,0.1); }
+        .btn-back:hover { background:rgba(255,255,255,0.11); }
+    </style>
+</head>
+<body>
+
+<!-- LOBBY -->
+<div class="lobby-screen" id="lobbyScreen">
+    <h1 class="lobby-title">🎲 AI <span>Viktorina</span></h1>
+    <p class="lobby-subtitle" id="lobbyTopic">Mavzu yuklanmoqda...</p>
+    <div class="lobby-main">
+        <div class="qr-box">
+            <img id="lobbyQR" src="" alt="QR">
+            <div class="pin-display" id="lobbyPin">--- ---</div>
+            <div class="pin-label">PIN yoki QR orqali kirish</div>
+        </div>
+        <div class="players-box">
+            <div class="players-header">
+                <h3>👥 Ishtirokchilar</h3>
+                <div class="player-count-badge" id="lobbyCount">0 ta</div>
+            </div>
+            <div class="players-grid" id="playersGrid"></div>
+        </div>
+    </div>
+    <button class="btn-start" id="btnStart" disabled onclick="startQuiz()">▶ Viktorinani Boshlash</button>
+</div>
+
+<!-- QUESTION -->
+<div class="question-screen" id="questionScreen" style="position:relative;">
+    <div class="q-topbar">
+        <div class="q-num" id="qNum">Savol 1/5</div>
+        <div class="live-pill">
+            <div class="live-dot"></div>
+            <span class="live-label">Jonli&nbsp;—</span>
+            <span class="live-progress" id="liveProgress">0/0</span>
+        </div>
+        <div class="q-topic" id="qTopic"></div>
+    </div>
+    <!-- Fallback countdown bar -->
+    <div class="timer-bar-wrap"><div class="timer-bar" id="timerBar" style="width:100%;"></div></div>
+
+    <div class="q-body">
+        <h1 class="q-text" id="qText"></h1>
+        <div class="q-options" id="qOptions"></div>
+    </div>
+    <div class="st-bar" id="stBar"></div>
+
+    <!-- Result panel -->
+    <div class="result-panel" id="resultPanel">
+        <h3 id="rTitle">📊 Javoblar taqsimoti (haqiqiy)</h3>
+        <div class="bar-row" id="barRow"></div>
+        <div class="result-footer">
+            <div class="result-correct-info" id="rInfo"></div>
+            <button class="btn-next-q" id="btnNextQ" onclick="goNext()">▶ Keyingi savol</button>
+        </div>
+    </div>
+</div>
+
+<!-- SCOREBOARD -->
+<div class="scoreboard-screen" id="scoreboardScreen">
+    <h2>🏆 <span>Natijalar</span></h2>
+    <p class="sb-sub" id="sbSub"></p>
+    <div class="summary-row" id="summaryRow"></div>
+    <div class="score-list" id="scoreList"></div>
+    <div class="sb-actions">
+        <button class="btn-act btn-pdf" onclick="exportPDF()">📄 PDF Eksport</button>
+        <button class="btn-act btn-back" onclick="window.location.href='dashboard.html'">🏠 Dashboard</button>
+    </div>
+</div>
+
+<script>
+const quizData = JSON.parse(localStorage.getItem('currentQuizData'));
+if (!quizData) { alert("Ma'lumot topilmadi."); window.location.href = 'dashboard.html'; }
+
+const pin      = quizData.pin;
+const topic    = quizData.topic;
+const questions = quizData.questions;
+
+let currentQ    = 0;
+let knownPlayers = [];
+let totalPlayers = 0;
+let finalResults = [];
+let pollInterval = null;    // lobby poll
+let answerPoll   = null;    // answer tracking poll
+let fallbackTimer = null;   // safety timer to force-advance
+let resultShown  = false;
+
+const FALLBACK_SECONDS = 40; // max seconds to wait before auto-showing results
+
+// ===== LOBBY =====
+document.getElementById('lobbyTopic').textContent = `Mavzu: ${topic}`;
+document.getElementById('lobbyPin').textContent = pin.toString().replace(/(\d{3})(\d{3})/, '$1 $2');
+const joinUrl = new URL('../../pages/student/join.html', window.location.href);
+joinUrl.searchParams.set('pin', pin);
+document.getElementById('lobbyQR').src = `https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=${encodeURIComponent(joinUrl.toString())}`;
+
+pollInterval = setInterval(async () => {
+    try {
+        const r = await fetch(`../../api/teacher/get_quiz_players.php?pin=${pin}`);
+        const d = await r.json();
+        if (d.success) {
+            totalPlayers = d.count;
+            document.getElementById('lobbyCount').textContent = d.count + ' ta';
+            d.players.forEach(p => {
+                if (!knownPlayers.includes(p.student_name)) {
+                    knownPlayers.push(p.student_name);
+                    const t = document.createElement('div');
+                    t.className = 'player-tag';
+                    t.textContent = p.student_name;
+                    document.getElementById('playersGrid').appendChild(t);
+                }
+            });
+            document.getElementById('btnStart').disabled = d.count < 1;
+        }
+    } catch(e){}
+}, 1500);
+
+// ===== START =====
+async function startQuiz() {
+    clearInterval(pollInterval);
+    try {
+        await fetch('../../api/teacher/update_quiz_status.php', {
+            method:'POST', headers:{'Content-Type':'application/json'},
+            body: JSON.stringify({ pin, status:'active', current_question:0 })
+        });
+    } catch(e){}
+    document.getElementById('lobbyScreen').style.display = 'none';
+    document.getElementById('questionScreen').style.display = 'flex';
+    showQuestion(0);
+}
+
+// ===== SHOW QUESTION =====
+function showQuestion(idx) {
+    if (idx >= questions.length) { showScoreboard(); return; }
+    currentQ   = idx;
+    resultShown = false;
+
+    // clear old intervals/timers
+    if (answerPoll) clearInterval(answerPoll);
+    if (fallbackTimer) clearTimeout(fallbackTimer);
+
+    const q = questions[idx];
+    const letters = ['A','B','C','D'];
+
+    document.getElementById('qNum').textContent  = `Savol ${idx+1} / ${questions.length}`;
+    document.getElementById('qTopic').textContent = topic;
+    document.getElementById('liveProgress').textContent = `0 / ${totalPlayers}`;
+    document.getElementById('resultPanel').style.display = 'none';
+
+    // Reset all options
+    document.getElementById('qText').textContent = q.question;
+    document.getElementById('qOptions').innerHTML = q.options.map((opt,i) => `
+        <div class="q-option" id="qOpt${i}">
+            <span class="opt-letter">${letters[i]}</span>
+            <span>${opt}</span>
+            <span class="opt-badge" id="optBadge${i}" style="display:none">0</span>
+        </div>`).join('');
+
+    // Student chips — all waiting
+    document.getElementById('stBar').innerHTML = knownPlayers.map(n =>
+        `<div class="st-chip waiting" id="chip_${CSS.escape(n)}">${n} ⏳</div>`
+    ).join('');
+
+    // Reset timer bar
+    const bar = document.getElementById('timerBar');
+    bar.style.transition = 'none';
+    bar.style.width = '100%';
+    setTimeout(() => {
+        bar.style.transition = `width ${FALLBACK_SECONDS}s linear`;
+        bar.style.width = '0%';
+    }, 50);
+
+    // Update DB
+    fetch('../../api/teacher/update_quiz_status.php', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ pin, status:'active', current_question:idx })
+    }).catch(()=>{});
+
+    // Poll for answers
+    answerPoll = setInterval(() => pollAnswers(idx), 1500);
+
+    // FALLBACK: after FALLBACK_SECONDS, force show results even if not all answered
+    fallbackTimer = setTimeout(() => {
+        if (!resultShown) {
+            resultShown = true;
+            clearInterval(answerPoll);
+            showResultPanel(idx);
+        }
+    }, FALLBACK_SECONDS * 1000);
+}
+
+// ===== POLL ANSWERS =====
+async function pollAnswers(idx) {
+    try {
+        // 1. How many answered
+        const r1 = await fetch(`../../api/teacher/get_answer_stats.php?pin=${pin}&question_index=${idx}`);
+        const d1 = await r1.json();
+        if (!d1.success) return;
+
+        const dist = d1.distribution || {};
+        const totalAnswered = d1.total_answers || 0;
+
+        document.getElementById('liveProgress').textContent = `${totalAnswered} / ${totalPlayers}`;
+
+        // Update option badges (real count)
+        for (let i = 0; i < questions[idx].options.length; i++) {
+            const badge = document.getElementById('optBadge' + i);
+            if (badge) {
+                const cnt = dist[i] || 0;
+                badge.textContent = cnt;
+                badge.style.display = cnt > 0 ? 'block' : 'none';
+            }
+        }
+
+        // 2. Who answered (for chips)
+        const r2 = await fetch(`../../api/teacher/get_answer_details.php?pin=${pin}&question_index=${idx}`);
+        const d2 = await r2.json();
+        if (d2.success && d2.students) {
+            d2.students.forEach(name => {
+                const el = document.getElementById('chip_' + CSS.escape(name));
+                if (el && el.classList.contains('waiting')) {
+                    el.classList.replace('waiting','done');
+                    el.textContent = name + ' ✅';
+                }
+            });
+        }
+
+        // Auto-show when all answered (and at least 1 person)
+        if (totalAnswered >= totalPlayers && totalPlayers > 0 && !resultShown) {
+            resultShown = true;
+            clearInterval(answerPoll);
+            clearTimeout(fallbackTimer);
+            // Reset timer bar immediately
+            const bar = document.getElementById('timerBar');
+            bar.style.transition = 'none';
+            bar.style.width = '0%';
+            setTimeout(() => showResultPanel(idx), 400);
+        }
+    } catch(e){}
+}
+
+// ===== SHOW RESULT PANEL =====
+async function showResultPanel(idx) {
+    const q = questions[idx];
+    const correctIdx = q.correct;
+    const letters = ['A','B','C','D'];
+    const colors  = ['#be123c','#1d4ed8','#b45309','#047857'];
+
+    // Dim wrong options, highlight correct
+    for (let i = 0; i < q.options.length; i++) {
+        const el = document.getElementById('qOpt' + i);
+        if (!el) continue;
+        if (i === correctIdx) el.classList.add('correct-opt');
+        else el.classList.add('dim-opt');
+    }
+
+    // Fetch final distribution
+    let dist = {};
+    let totalAns = 0;
+    try {
+        const r = await fetch(`../../api/teacher/get_answer_stats.php?pin=${pin}&question_index=${idx}`);
+        const d = await r.json();
+        if (d.success) { dist = d.distribution || {}; totalAns = d.total_answers || 0; }
+    } catch(e){}
+
+    // Build bar chart
+    const maxCnt = Math.max(1, ...Object.values(dist).map(Number));
+    const barRow = document.getElementById('barRow');
+    barRow.innerHTML = q.options.map((opt,i) => {
+        const cnt = dist[i] || 0;
+        const pct = totalAns > 0 ? Math.round(cnt/totalAns*100) : 0;
+        const h   = maxCnt > 0 ? Math.max(Math.round(cnt/maxCnt*100), 5) : 5;
+        const bg  = (i === correctIdx) ? 'linear-gradient(180deg,#10b981,#059669)' : `linear-gradient(180deg,${colors[i]},${colors[i]}bb)`;
+        const glow= (i === correctIdx) ? 'box-shadow:0 0 20px rgba(16,185,129,0.4);' : '';
+        return `
+            <div class="bar-col">
+                <div class="bar-fill" id="barf${i}" style="height:0px;background:${bg};${glow}min-height:20px;border-radius:8px 8px 0 0;">
+                    <span>${pct}%</span>
+                </div>
+                <div class="bar-label">${letters[i]}${i===correctIdx?' ✅':''}</div>
+                <div class="bar-count">${cnt} kishi</div>
+            </div>`;
+    }).join('');
+
+    // Animate bars
+    setTimeout(() => {
+        q.options.forEach((_,i) => {
+            const cnt = dist[i] || 0;
+            const h   = maxCnt > 0 ? Math.max(Math.round(cnt/maxCnt*90), 8) : 8;
+            const el  = document.getElementById('barf' + i);
+            if (el) { el.style.transition = 'height 0.8s cubic-bezier(0.34,1.56,0.64,1)'; el.style.height = h + 'px'; }
+        });
+    }, 80);
+
+    const correctCnt = dist[correctIdx] || 0;
+    const correctPct = totalAns > 0 ? Math.round(correctCnt/totalAns*100) : 0;
+    document.getElementById('rInfo').innerHTML =
+        `<strong>✅ To'g'ri: ${letters[correctIdx]}</strong> — ${totalAns} kishidan ${correctCnt} tasi to'g'ri javob berdi (${correctPct}%)`;
+
+    // Button label
+    document.getElementById('btnNextQ').textContent = (currentQ+1 >= questions.length)
+        ? '🏆 Natijalarni ko\'rish' : `▶ ${currentQ+2}-savolga o'tish`;
+
+    document.getElementById('resultPanel').style.display = 'block';
+}
+
+function goNext() {
+    showQuestion(currentQ + 1);
+}
+
+// ===== SCOREBOARD =====
+async function showScoreboard() {
+    if (answerPoll) clearInterval(answerPoll);
+    if (fallbackTimer) clearTimeout(fallbackTimer);
+    document.getElementById('questionScreen').style.display = 'none';
+    document.getElementById('scoreboardScreen').style.display = 'flex';
+    document.body.style.overflow = 'auto';
+
+    try {
+        await fetch('../../api/teacher/update_quiz_status.php', {
+            method:'POST', headers:{'Content-Type':'application/json'},
+            body: JSON.stringify({ pin, status:'finished' })
+        });
+    } catch(e){}
+
+    try {
+        const r = await fetch(`../../api/teacher/get_quiz_players.php?pin=${pin}`);
+        const d = await r.json();
+        if (d.success && d.players.length > 0) {
+            const sorted = [...d.players].sort((a,b) => (b.score||0)-(a.score||0));
+            finalResults = sorted;
+            const rankCls = ['gold','silver','bronze'];
+            const total = sorted.length;
+            const avgScore = Math.round(sorted.reduce((s,p)=>s+(p.score||0),0)/total);
+            const topScore = sorted[0].score || 0;
+            const avgCorr  = (sorted.reduce((s,p)=>s+(p.correct_answers||0),0)/total).toFixed(1);
+
+            document.getElementById('sbSub').textContent   = `${topic} · ${questions.length} savol · ${new Date().toLocaleDateString('uz-UZ')}`;
+            document.getElementById('summaryRow').innerHTML = `
+                <div class="summary-box"><div class="sv b">${total}</div><div class="sl">Ishtirokchilar</div></div>
+                <div class="summary-box"><div class="sv g">${topScore}</div><div class="sl">Eng yuqori ball</div></div>
+                <div class="summary-box"><div class="sv">${avgScore}</div><div class="sl">O'rtacha ball</div></div>
+                <div class="summary-box"><div class="sv">${avgCorr}</div><div class="sl">O'rtacha to'g'ri</div></div>`;
+            document.getElementById('scoreList').innerHTML = sorted.map((p,i) => `
+                <div class="score-row">
+                    <div class="score-rank ${rankCls[i]||'normal'}">${i+1}</div>
+                    <div class="score-name">${p.student_name}</div>
+                    <div style="display:flex;align-items:center;gap:16px;margin-left:auto;">
+                        <div style="font-size:0.85rem;color:#94a3b8;text-align:right;">
+                            <div>✅ <strong style="color:#fff">${p.correct_answers||0}</strong>/${questions.length}</div>
+                            <div style="font-size:0.75rem;">⏱ ${parseFloat(p.total_time||0).toFixed(1)}s</div>
+                        </div>
+                        <div class="score-pts">${p.score||0}<span style="font-size:0.65rem;font-weight:600;"> ball</span></div>
+                    </div>
+                </div>`).join('');
+
+            try {
+                await fetch('../../api/teacher/finalize_game.php', {
+                    method:'POST', headers:{'Content-Type':'application/json'},
+                    body: JSON.stringify({ pin, results:{ winner:sorted[0].student_name, top_score:topScore, players_count:total, avg_score:avgScore } })
+                });
+            } catch(e){}
+        }
+    } catch(e) { console.error(e); }
+}
+
+// ===== PDF =====
+function exportPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF('p','mm','a4');
+    doc.setFontSize(18); doc.setTextColor(30,30,60);
+    doc.text('Bahola Ai — Viktorina Natijalari', 105, 20, {align:'center'});
+    doc.setFontSize(11); doc.setTextColor(100,100,120);
+    doc.text(`Mavzu: ${topic}`, 105, 28, {align:'center'});
+    doc.text(`Sana: ${new Date().toLocaleDateString('uz-UZ')} | Savollar: ${questions.length} ta | Ishtirokchilar: ${finalResults.length} ta`, 105, 34, {align:'center'});
+    const total = finalResults.length;
+    const avgS = total>0 ? Math.round(finalResults.reduce((s,p)=>s+(p.score||0),0)/total) : 0;
+    doc.setFontSize(10); doc.text(`O'rtacha ball: ${avgS}`, 105, 42, {align:'center'});
+    const rows = finalResults.map((p,i) => {
+        const c = parseInt(p.correct_answers||0);
+        const pct = Math.round(c/questions.length*100);
+        return [i+1, p.student_name, `${c}/${questions.length}`, p.score||0, parseFloat(p.total_time||0).toFixed(1)+'s', pct+'%', pct>=86?"A'lo":pct>=71?"Yaxshi":pct>=56?"Qoniqarli":"Qoniqarsiz"];
+    });
+    doc.autoTable({ startY:48, head:[['#',"O'quvchi","To'g'ri",'Ball','Vaqt','Foiz','Baho']], body:rows, theme:'grid', headStyles:{fillColor:[59,130,246],textColor:255,fontSize:9,fontStyle:'bold'}, bodyStyles:{fontSize:9,textColor:[40,40,60]}, alternateRowStyles:{fillColor:[245,247,252]}, columnStyles:{0:{halign:'center',cellWidth:10},3:{halign:'center',fontStyle:'bold'},4:{halign:'center'},5:{halign:'center'},6:{halign:'center'}}, margin:{left:14,right:14} });
+    for (let i=1;i<=doc.internal.getNumberOfPages();i++) { doc.setPage(i); doc.setFontSize(8); doc.setTextColor(150); doc.text(`Bahola Ai — ${new Date().toLocaleString('uz-UZ')}`,105,doc.internal.pageSize.height-10,{align:'center'}); }
+    doc.save(`Viktorina_${topic.replace(/\s+/g,'_')}_${new Date().toISOString().slice(0,10)}.pdf`);
+}
+</script>
+</body>
+</html>

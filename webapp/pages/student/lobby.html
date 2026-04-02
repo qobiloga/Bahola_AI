@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Viktorina — Bahola Ai</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Outfit',sans-serif; }
+        body { background:#0f0a1e; color:#fff; min-height:100vh; display:flex; flex-direction:column; user-select:none; }
+
+        /* WAITING */
+        .waiting-screen { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:30px; text-align:center; }
+        .w-avatar { width:72px; height:72px; background:linear-gradient(135deg,#10b981,#3b82f6); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.8rem; font-weight:700; margin-bottom:16px; box-shadow:0 0 28px rgba(16,185,129,0.25); }
+        .w-name { font-size:1.4rem; font-weight:700; margin-bottom:4px; }
+        .w-status { color:#94a3b8; margin-bottom:24px; font-size:0.95rem; }
+        .loader { width:48px; height:48px; border:4px solid rgba(255,255,255,0.08); border-top-color:#10b981; border-radius:50%; animation:spin 0.9s linear infinite; margin-bottom:16px; }
+        @keyframes spin { to { transform:rotate(360deg); } }
+        .w-hint { color:#475569; font-size:0.82rem; font-style:italic; }
+
+        /* ANSWER */
+        .answer-screen { display:none; flex:1; flex-direction:column; }
+        .a-top { padding:14px 20px; background:rgba(0,0,0,0.3); border-bottom:1px solid rgba(255,255,255,0.05); text-align:center; }
+        .a-qnum { font-size:0.85rem; color:#64748b; font-weight:600; }
+        .a-question { font-size:1.05rem; font-weight:700; line-height:1.4; margin-top:8px; color:#e2e8f0; }
+        .a-grid { display:flex; flex-direction:column; gap:12px; padding:16px; flex:1; }
+        .a-btn {
+            background:rgba(30,41,59,0.8); border:1.5px solid rgba(255,255,255,0.09);
+            border-radius:16px; font-size:1rem; font-weight:600; color:#fff;
+            cursor:pointer; display:flex; align-items:center; gap:14px;
+            min-height:72px; padding:14px 18px; text-align:left;
+            box-shadow:0 6px 18px rgba(0,0,0,0.3); transition:all 0.18s; width:100%;
+        }
+        .a-btn:active { transform:scale(0.97); }
+        .a-btn:hover { background:rgba(51,65,85,0.9); }
+        .a-btn.selected { border:2px solid #818cf8; background:rgba(30,41,59,1); box-shadow:0 0 12px rgba(79,70,229,0.4); }
+        .a-btn.correct  { border:2px solid #10b981; background:rgba(16,185,129,0.12); box-shadow:0 0 18px rgba(16,185,129,0.3); }
+        .a-btn.wrong    { border:2px solid #ef4444; background:rgba(239,68,68,0.1); opacity:0.7; }
+        .a-btn.disabled { opacity:0.45; pointer-events:none; }
+        .sym { font-size:1rem; font-weight:800; background:rgba(79,70,229,0.2); width:38px; height:38px; display:flex; align-items:center; justify-content:center; border-radius:8px; flex-shrink:0; color:#818cf8; border:1px solid rgba(79,70,229,0.25); }
+
+        /* FEEDBACK flash */
+        .feedback { display:none; position:fixed; inset:0; flex-direction:column; align-items:center; justify-content:center; z-index:200; text-align:center; }
+        .feedback.ok  { background:rgba(16,185,129,0.95); }
+        .feedback.bad { background:rgba(239,68,68,0.95); }
+        .fb-icon { font-size:5rem; margin-bottom:12px; }
+        .fb-text { font-size:1.9rem; font-weight:800; }
+        .fb-sub  { font-size:1rem; color:rgba(255,255,255,0.75); margin-top:8px; }
+
+        /* WAITING for next */
+        .next-wait { display:none; flex:1; flex-direction:column; align-items:center; justify-content:center; padding:30px; text-align:center; }
+        .next-wait .icon { font-size:3rem; margin-bottom:16px; }
+        .next-wait p { color:#94a3b8; }
+
+        /* FINAL */
+        .final-screen { display:none; flex:1; flex-direction:column; align-items:center; justify-content:center; padding:30px; text-align:center; }
+        .final-screen .trophy { font-size:4rem; margin-bottom:14px; }
+        .final-screen h2 { font-size:1.7rem; margin-bottom:4px; }
+        .final-pts { font-size:3rem; font-weight:900; color:#10b981; }
+        .final-stats { margin-top:20px; background:rgba(255,255,255,0.05); padding:14px 20px; border-radius:12px; display:flex; gap:24px; justify-content:center; font-size:1rem; }
+    </style>
+</head>
+<body>
+
+<!-- WAITING START -->
+<div class="waiting-screen" id="waitingScreen">
+    <div class="w-avatar" id="wAvatar">?</div>
+    <div class="w-name" id="wName">...</div>
+    <div class="w-status">Viktorinaga qo'shildingiz!</div>
+    <div class="loader"></div>
+    <p class="w-hint">O'qituvchi viktorinani boshlashini kuting...</p>
+</div>
+
+<!-- ANSWER -->
+<div class="answer-screen" id="answerScreen">
+    <div class="a-top">
+        <div class="a-qnum" id="aQNum">Savol 1 / 5</div>
+        <div class="a-question" id="aQuestion"></div>
+    </div>
+    <div class="a-grid" id="aGrid">
+        <button class="a-btn" onclick="selectAnswer(0)"><span class="sym">A</span><span id="opt0"></span></button>
+        <button class="a-btn" onclick="selectAnswer(1)"><span class="sym">B</span><span id="opt1"></span></button>
+        <button class="a-btn" onclick="selectAnswer(2)"><span class="sym">C</span><span id="opt2"></span></button>
+        <button class="a-btn" onclick="selectAnswer(3)"><span class="sym">D</span><span id="opt3"></span></button>
+    </div>
+</div>
+
+<!-- FEEDBACK FLASH -->
+<div class="feedback" id="feedback">
+    <div class="fb-icon" id="fbIcon">✅</div>
+    <div class="fb-text" id="fbText">To'g'ri!</div>
+    <div class="fb-sub"  id="fbSub">+100 ball</div>
+</div>
+
+<!-- WAITING NEXT QUESTION -->
+<div class="next-wait" id="nextWait">
+    <div class="icon">⏳</div>
+    <h3 style="margin-bottom:8px;">Javob qabul qilindi</h3>
+    <p>O'qituvchi keyingi savolni boshlashini kuting...</p>
+</div>
+
+<!-- FINAL -->
+<div class="final-screen" id="finalScreen">
+    <div class="trophy">🏆</div>
+    <h2 id="finalName"></h2>
+    <div class="final-pts" id="finalPts">0 ball</div>
+    <div class="final-stats">
+        <div>✅ <span id="finalCorr">0</span> to'g'ri</div>
+        <div>⏱ <span id="finalTime">0</span>s</div>
+    </div>
+    <p style="color:#94a3b8;margin-top:16px;">Viktorina tugadi. Rahmat!</p>
+</div>
+
+<script>
+const studentName = localStorage.getItem('studentName') || "O'quvchi";
+const activePin   = localStorage.getItem('activePin') || '';
+const API         = '/api';
+
+if (!activePin) {
+    setTimeout(() => window.location.href = '/pages/student/join.html', 2000);
+}
+
+document.getElementById('wName').textContent   = studentName;
+document.getElementById('wAvatar').textContent = studentName.charAt(0).toUpperCase();
+
+let myScore     = 0;
+let myCorrects  = 0;
+let myTotalTime = 0;
+let totalQ      = 0;
+let answered    = false;
+let lastQ       = -1;      // last question index we processed
+let lastStatus  = '';      // last known status from DB
+let pollTimer   = null;
+
+// ===== MAIN POLL LOOP =====
+// Polls every 1.5s to track teacher's current_question and status
+function startPolling() {
+    if (pollTimer) clearInterval(pollTimer);
+    pollTimer = setInterval(fetchStatus, 1500);
+    fetchStatus(); // immediate first call
+}
+
+async function fetchStatus() {
+    try {
+        const r = await fetch(`${API}/student/get_quiz_status.php?pin=${activePin}`);
+        if (!r.ok) return;
+        const d = await r.json();
+        if (!d.success) return;
+
+        totalQ = d.total_questions || totalQ;
+        const newStatus = d.status;
+        const newQ      = d.current_question;
+
+        // Quiz just finished
+        if (newStatus === 'finished' && lastStatus !== 'finished') {
+            lastStatus = 'finished';
+            clearInterval(pollTimer);
+            showFinal();
+            return;
+        }
+        lastStatus = newStatus;
+
+        // New question appeared (or quiz just started)
+        if (newStatus === 'active' && newQ !== lastQ) {
+            lastQ    = newQ;
+            answered = false;
+            showAnswerScreen(newQ, d.total_questions, d.question_data);
+        }
+        // If answered and still same question → show "waiting next" screen
+        // (handled in showNextWait — don't re-trigger)
+
+    } catch(e) { console.error(e); }
+}
+
+// ===== SHOW ANSWER SCREEN =====
+function showAnswerScreen(qIdx, total, qData) {
+    hide('waitingScreen');
+    hide('feedback');
+    hide('nextWait');
+    hide('finalScreen');
+    show('answerScreen');
+
+    document.getElementById('aQNum').textContent = `Savol ${qIdx+1} / ${total}`;
+
+    if (qData) {
+        document.getElementById('aQuestion').textContent = qData.question;
+        ['A','B','C','D'].forEach((_,i) => {
+            const el = document.getElementById('opt'+i);
+            if (el) el.textContent = qData.options[i] || '';
+        });
+    }
+
+    // Reset button states
+    document.querySelectorAll('.a-btn').forEach(b => {
+        b.className = 'a-btn';
+        b.disabled  = false;
+    });
+}
+
+// ===== SELECT ANSWER =====
+async function selectAnswer(optIdx) {
+    if (answered) return;
+    answered = true;
+
+    const timeSpent = 3; // default; client-side timing not needed
+
+    // Mark UI
+    document.querySelectorAll('.a-btn').forEach((b,i) => {
+        if (i === optIdx) b.classList.add('selected');
+        else              b.classList.add('disabled');
+    });
+    document.querySelectorAll('.a-btn').forEach(b => b.disabled = true);
+
+    // Submit
+    try {
+        const r = await fetch(`${API}/student/submit_answer.php`, {
+            method:'POST', headers:{'Content-Type':'application/json'},
+            body: JSON.stringify({ pin:activePin, name:studentName, question_index:lastQ, answer_index:optIdx, time_spent:timeSpent })
+        });
+        const d = await r.json();
+        if (d.success) {
+            myTotalTime += timeSpent;
+            if (d.correct) {
+                const bonus = 100; // simplified
+                myScore    += bonus;
+                myCorrects++;
+                document.querySelectorAll('.a-btn')[optIdx].classList.replace('selected','correct');
+                showFeedback(true, bonus);
+            } else {
+                document.querySelectorAll('.a-btn')[optIdx].classList.replace('selected','wrong');
+                // Show correct answer
+                if (d.correct_answer !== undefined) {
+                    const correctBtn = document.querySelectorAll('.a-btn')[d.correct_answer];
+                    if (correctBtn) correctBtn.classList.add('correct');
+                }
+                showFeedback(false, 0);
+            }
+        }
+    } catch(e) {
+        showFeedback(false, 0);
+    }
+}
+
+// ===== FEEDBACK FLASH (1.5s) then waiting =====
+function showFeedback(isCorrect, pts) {
+    const fb = document.getElementById('feedback');
+    fb.className = 'feedback ' + (isCorrect ? 'ok' : 'bad');
+    document.getElementById('fbIcon').textContent = isCorrect ? '✅' : '❌';
+    document.getElementById('fbText').textContent = isCorrect ? "To'g'ri!" : "Noto'g'ri";
+    document.getElementById('fbSub').textContent  = isCorrect ? `+${pts} ball` : "0 ball";
+    show('feedback');
+
+    // After 1.5s → hide feedback, show "next question" waiting screen
+    setTimeout(() => {
+        hide('feedback');
+        showNextWait();
+    }, 1500);
+}
+
+function showNextWait() {
+    hide('answerScreen');
+    hide('feedback');
+    show('nextWait');
+    // Continue polling — when teacher advances question, showAnswerScreen will fire
+}
+
+// ===== FINAL =====
+function showFinal() {
+    hide('waitingScreen'); hide('answerScreen'); hide('feedback'); hide('nextWait');
+    show('finalScreen');
+    document.getElementById('finalName').textContent = studentName;
+    document.getElementById('finalPts').textContent  = myScore + ' ball';
+    document.getElementById('finalCorr').textContent = myCorrects + ' / ' + totalQ;
+    document.getElementById('finalTime').textContent = myTotalTime.toFixed(1);
+}
+
+function show(id) { const el=document.getElementById(id); if(el) el.style.display='flex'; }
+function hide(id) { const el=document.getElementById(id); if(el) el.style.display='none'; }
+
+// Start
+startPolling();
+</script>
+</body>
+</html>

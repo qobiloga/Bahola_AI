@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tournament — Bahola Ai</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Outfit',sans-serif; }
+        body { background:#0f0a1e; color:#fff; min-height:100vh; display:flex; flex-direction:column; overflow:hidden; }
+        
+        .screen { display:none; flex:1; flex-direction:column; align-items:center; justify-content:center; padding:20px; text-align:center; height:100vh; }
+        .active-screen { display:flex; }
+
+        .loader { width:50px; height:50px; border:4px solid rgba(255,255,255,0.1); border-top-color:#f59e0b; border-radius:50%; animation:spin 1s linear infinite; margin:20px auto; }
+        @keyframes spin { to { transform:rotate(360deg); } }
+
+        /* MATCH VS SCREEN */
+        .vs-card { background:rgba(30,41,59,0.8); border:1px solid rgba(255,255,255,0.1); border-radius:24px; padding:30px; width:100%; max-width:400px; box-shadow:0 10px 30px rgba(0,0,0,0.5); }
+        .vs-row { display:flex; justify-content:space-between; align-items:center; margin:20px 0; }
+        .vs-player { display:flex; flex-direction:column; align-items:center; gap:10px; flex:1; }
+        .p-ava { width:60px; height:60px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.5rem; font-weight:800; }
+        .p1-ava { background:linear-gradient(135deg,#3b82f6,#0ea5e9); box-shadow:0 0 20px rgba(59,130,246,0.4); }
+        .p2-ava { background:linear-gradient(135deg,#ef4444,#f43f5e); box-shadow:0 0 20px rgba(239,68,68,0.4); }
+        .p-name { font-size:1.2rem; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:120px; }
+        .p-score { font-size:1.8rem; font-weight:900; color:#10b981; }
+        .vs-badge { font-size:2.5rem; font-weight:900; color:#f59e0b; text-shadow:0 0 20px rgba(245,158,11,0.5); }
+
+        /* QUESTION SCREEN */
+        .q-header { text-align:center; margin-bottom:20px; width:100%; max-width:500px; }
+        .q-timer { font-size:3rem; font-weight:900; color:#ef4444; }
+        .q-text { font-size:1.4rem; font-weight:600; line-height:1.4; margin:10px 0; }
+        
+        .opts-grid { display:flex; flex-direction:column; gap:15px; width:100%; max-width:500px; }
+        .opt-btn { background:rgba(30,41,59,0.9); border:1px solid rgba(255,255,255,0.1); border-radius:16px; padding:20px; font-size:1.1rem; color:#fff; text-align:left; display:flex; gap:15px; align-items:center; transition:0.2s; cursor:pointer; }
+        .opt-sym { width:35px; height:35px; background:rgba(79,70,229,0.2); color:#818cf8; border-radius:8px; display:flex; align-items:center; justify-content:center; font-weight:800; flex-shrink:0; }
+        .opt-btn:active { transform:scale(0.98); }
+        .opt-btn.correct { border:2px solid #10b981; background:rgba(16,185,129,0.1); box-shadow:0 0 15px rgba(16,185,129,0.4); }
+        .opt-btn.wrong { border:2px solid #ef4444; opacity:0.5; }
+        .opt-btn.disabled { opacity:0.5; pointer-events:none; }
+
+        .top-scores { position:absolute; top:20px; left:20px; right:20px; display:flex; justify-content:space-between; font-weight:bold; font-size:1.2rem; }
+
+        .eliminated { color:#ef4444; font-size:2.5rem; font-weight:900; margin-bottom:20px; }
+        .champ-trophy { font-size:6rem; margin-bottom:20px; }
+
+    </style>
+</head>
+<body>
+
+    <!-- S1: WAIT -->
+    <div class="screen active-screen" id="sWait">
+        <h2 style="margin-bottom:10px;" id="waitTitle">Kuting...</h2>
+        <div class="loader" id="waitLoader"></div>
+        <p style="color:#94a3b8;" id="waitSub">O'qituvchi harakatini kutmoqdamiz.</p>
+    </div>
+
+    <!-- S2: MATCH INFO -->
+    <div class="screen" id="sMatch">
+        <h2 style="color:#94a3b8; margin-bottom:20px;" id="matchRound">Raund 1</h2>
+        <div class="vs-card">
+            <div class="vs-row">
+                <div class="vs-player">
+                    <div class="p-ava p1-ava" id="mMeAva">M</div>
+                    <div class="p-name" id="mMeName">Siz</div>
+                    <div class="p-score" id="mMeScore">0</div>
+                </div>
+                <div class="vs-badge">VS</div>
+                <div class="vs-player">
+                    <div class="p-ava p2-ava" id="mOppAva">R</div>
+                    <div class="p-name" id="mOppName">Raqib</div>
+                    <div class="p-score" id="mOppScore">0</div>
+                </div>
+            </div>
+            <p style="color:#94a3b8; margin-top:20px;" id="mStatus">Savol kutilmoqda...</p>
+        </div>
+    </div>
+
+    <!-- S3: QUESTION -->
+    <div class="screen" id="sQuestion" style="justify-content:flex-start; padding-top:60px; position:relative;">
+        <div class="top-scores">
+            <div style="color:#3b82f6;">Siz: <span id="qMeScore">0</span></div>
+            <div style="color:#ef4444;" id="qOppNameTxt">Raqib: <span id="qOppScore">0</span></div>
+        </div>
+
+        <div class="q-header">
+            <div class="q-timer" id="qTimer">15</div>
+            <div style="color:#94a3b8; font-size:0.9rem; text-transform:uppercase; margin-top:5px;" id="qSubject">FANI</div>
+            <div class="q-text" id="qText">Savol matni...</div>
+        </div>
+
+        <div class="opts-grid" id="qOptions">
+            <div class="opt-btn" onclick="submitAns(0)"><div class="opt-sym">A</div> <span id="opt0">...</span></div>
+            <div class="opt-btn" onclick="submitAns(1)"><div class="opt-sym">B</div> <span id="opt1">...</span></div>
+            <div class="opt-btn" onclick="submitAns(2)"><div class="opt-sym">C</div> <span id="opt2">...</span></div>
+            <div class="opt-btn" onclick="submitAns(3)"><div class="opt-sym">D</div> <span id="opt3">...</span></div>
+        </div>
+    </div>
+
+    <!-- S4: ELIMINATED -->
+    <div class="screen" id="sEliminated">
+        <div class="eliminated">❌ Turnirdan chiqdingiz</div>
+        <p style="color:#94a3b8; font-size:1.2rem; margin-bottom:20px;">Sizning jami ballingiz: <strong style="color:#fff;" id="elimScore">0</strong></p>
+        <button class="opt-btn" style="justify-content:center; background:#1e293b;" onclick="window.location.href='join.html'">Chiqish</button>
+    </div>
+
+    <!-- S5: CHAMPION -->
+    <div class="screen" id="sChamp">
+        <div class="champ-trophy">🏆</div>
+        <h1 style="font-size:3rem; color:#f59e0b; margin-bottom:10px;">CHEMPION!</h1>
+        <p style="color:#e2e8f0; font-size:1.2rem;">Siz bugungi turnir g'olibi bo'ldingiz!</p>
+    </div>
+
+<script>
+    const studentName = localStorage.getItem('studentName');
+    const pin = localStorage.getItem('activePin');
+    
+    if(!studentName || !pin) window.location.href = 'join.html';
+
+    let currentMatchId = 0;
+    let currentQIdx = -1;
+    let timerInt = null;
+    let qStartTime = 0;
+    let answered = false;
+
+    // Join API
+    fetch('/api/student/join_tournament.php', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({pin, name: studentName})
+    }).then(() => poll());
+
+    function showScreen(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen'));
+        document.getElementById(id).classList.add('active-screen');
+    }
+
+    function poll() {
+        setInterval(async () => {
+            try {
+                const res = await fetch(`/api/student/get_tournament_status.php?pin=${pin}&name=${encodeURIComponent(studentName)}`);
+                const data = await res.json();
+                if(data.success) updateUI(data);
+            } catch(e) {}
+        }, 1500);
+    }
+
+    let globalTimeLimit = 15;
+
+    function updateUI(data) {
+        if(data.time_limit) globalTimeLimit = data.time_limit;
+
+        if(data.is_eliminated) {
+            document.getElementById('elimScore').textContent = data.my_score;
+            showScreen('sEliminated');
+            return;
+        }
+
+        if(data.tournament_status === 'finished') {
+            if(data.champion === studentName) showScreen('sChamp');
+            else {
+                document.getElementById('elimScore').textContent = data.my_score;
+                showScreen('sEliminated');
+            }
+            return;
+        }
+
+        if(data.tournament_status === 'waiting') {
+            document.getElementById('waitTitle').textContent = "Turnir kutish zali";
+            document.getElementById('waitSub').textContent = `O'qituvchi turnirni boshlashini kuting... (${data.alive_count} ta o'quvchi)`;
+            showScreen('sWait');
+            return;
+        }
+
+        // Active State
+        if (data.match) {
+            const m = data.match;
+            currentMatchId = m.id;
+            
+            // Checking if the Match is BYE (opponent null)
+            if (!m.opponent) {
+                document.getElementById('waitTitle').textContent = "Avtomatik yutuq (BYE)";
+                document.getElementById('waitSub').textContent = "Sizga raqib topilmadi. Keyingi raundni kuting!";
+                showScreen('sWait');
+                return;
+            }
+
+            if (m.status === 'active' && m.question_data && !m.already_answered) {
+                // WE HAVE A NEW QUESTION
+                if (currentQIdx !== m.current_question) {
+                    currentQIdx = m.current_question;
+                    renderQuestion(m);
+                }
+            } else if (m.status === 'active' && m.already_answered) {
+                document.getElementById('waitTitle').textContent = "Javob qabul qilindi";
+                document.getElementById('waitSub').textContent = "Raqib javobini va keyingi savolni kuting...";
+                showScreen('sWait');
+            } else if (m.status === 'completed') {
+                document.getElementById('mStatus').textContent = `Match tugadi! G'olib: ${m.winner}`;
+                document.getElementById('mRound').textContent = `Raund ${m.round} Yakuni`;
+                updateMatchCard(m);
+                showScreen('sMatch');
+            } else {
+                // Pending or resting between questions
+                document.getElementById('mStatus').textContent = m.status === 'pending' ? "Match hali boshlanmadi. Kuting..." : "Keyingi savolga tayyorlaning...";
+                document.getElementById('matchRound').textContent = `Raund ${m.round}`;
+                updateMatchCard(m);
+                showScreen('sMatch');
+            }
+        } else {
+            // Probably waiting for next round matches to be generated
+            document.getElementById('waitTitle').textContent = "Ajoyib!";
+            document.getElementById('waitSub').textContent = "Keyingi raund raqibi aniqlanmoqda...";
+            showScreen('sWait');
+        }
+    }
+
+    function updateMatchCard(m) {
+        document.getElementById('mMeAva').textContent = studentName[0].toUpperCase();
+        document.getElementById('mOppAva').textContent = m.opponent[0].toUpperCase();
+        document.getElementById('mOppName').textContent = m.opponent;
+        document.getElementById('mMeScore').textContent = m.my_score;
+        document.getElementById('mOppScore').textContent = m.opponent_score;
+    }
+
+    function renderQuestion(m) {
+        showScreen('sQuestion');
+        answered = false;
+        qStartTime = Date.now();
+        
+        document.getElementById('qMeScore').textContent = m.my_score;
+        document.getElementById('qOppNameTxt').innerHTML = `${m.opponent}: <span id="qOppScore">${m.opponent_score}</span>`;
+        
+        const q = m.question_data;
+        document.getElementById('qText').textContent = q.question;
+        document.getElementById('qSubject').textContent = `Fan: ${q.subject}`;
+        
+        const opts = document.getElementById('qOptions');
+        const letters = ['A','B','C','D'];
+        opts.innerHTML = '';
+        q.options.forEach((txt, i) => {
+            opts.innerHTML += `<div class="opt-btn" id="btnAns${i}" onclick="submitAns(${i})"><div class="opt-sym">${letters[i]}</div> <span>${txt}</span></div>`;
+        });
+
+        // Timer
+        let t = globalTimeLimit;
+        document.getElementById('qTimer').textContent = t;
+        if(timerInt) clearInterval(timerInt);
+        timerInt = setInterval(()=>{
+            t--;
+            document.getElementById('qTimer').textContent = t;
+            if(t <= 0) {
+                clearInterval(timerInt);
+                if(!answered) submitAns(-1); // timeout
+            }
+        }, 1000);
+    }
+
+    async function submitAns(idx) {
+        if(answered) return;
+        answered = true;
+        if(timerInt) clearInterval(timerInt);
+
+        const timeTaken = Date.now() - qStartTime;
+
+        // Visual
+        const btns = document.querySelectorAll('.opt-btn');
+        btns.forEach(b => b.classList.add('disabled'));
+        if(idx >= 0) document.getElementById(`btnAns${idx}`).style.border = '2px solid #818cf8';
+
+        try {
+            const res = await fetch('/api/student/submit_tournament_answer.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    pin, name: studentName, match_id: currentMatchId, question_index: currentQIdx, answer_index: idx, time_taken: timeTaken
+                })
+            });
+            const data = await res.json();
+            
+            if(data.success && idx >= 0) {
+                if(data.correct) document.getElementById(`btnAns${idx}`).classList.add('correct');
+                else {
+                    document.getElementById(`btnAns${idx}`).classList.add('wrong');
+                    if(data.correct_answer >= 0) document.getElementById(`btnAns${data.correct_answer}`).classList.add('correct');
+                }
+            }
+            
+            // Wait 2 seconds then go back to waiting screen
+            setTimeout(() => {
+                document.getElementById('waitTitle').textContent = "Javob yuborildi";
+                document.getElementById('waitSub').textContent = "O'qituvchi keyingi bosqichga o'tkazishini kuting...";
+                showScreen('sWait');
+            }, 2000);
+
+        } catch(e) { console.error(e); }
+    }
+</script>
+</body>
+</html>

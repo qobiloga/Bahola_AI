@@ -1,0 +1,180 @@
+/* ============================================
+   Ustoz ko'makchi - Design System Variables
+   ============================================ */
+
+:root {
+    /* Primary Colors */
+    --primary-50: #eff6ff;
+    --primary-100: #dbeafe;
+    --primary-200: #bfdbfe;
+    --primary-300: #93c5fd;
+    --primary-400: #60a5fa;
+    --primary-500: #3b82f6;
+    --primary-600: #2563eb;
+    --primary-700: #1d4ed8;
+    --primary-800: #1e40af;
+    --primary-900: #1e3a8a;
+
+    /* Accent - Emerald */
+    --accent-50: #ecfdf5;
+    --accent-100: #d1fae5;
+    --accent-200: #a7f3d0;
+    --accent-300: #6ee7b7;
+    --accent-400: #34d399;
+    --accent-500: #10b981;
+    --accent-600: #059669;
+    --accent-700: #047857;
+
+    /* Warning - Amber */
+    --warning-400: #fbbf24;
+    --warning-500: #f59e0b;
+    --warning-600: #d97706;
+
+    /* Error - Rose */
+    --error-400: #fb7185;
+    --error-500: #f43f5e;
+    --error-600: #e11d48;
+
+    /* Neutrals */
+    --gray-50: #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-300: #cbd5e1;
+    --gray-400: #94a3b8;
+    --gray-500: #64748b;
+    --gray-600: #475569;
+    --gray-700: #334155;
+    --gray-800: #1e293b;
+    --gray-900: #0f172a;
+    --gray-950: #020617;
+
+    /* Surfaces */
+    --surface-bg: #0a0e1a;
+    --surface-card: rgba(15, 23, 42, 0.8);
+    --surface-card-hover: rgba(30, 41, 59, 0.9);
+    --surface-glass: rgba(255, 255, 255, 0.05);
+    --surface-glass-border: rgba(255, 255, 255, 0.08);
+    --surface-overlay: rgba(0, 0, 0, 0.6);
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    --gradient-accent: linear-gradient(135deg, #10b981, #3b82f6);
+    --gradient-warm: linear-gradient(135deg, #f59e0b, #f43f5e);
+    --gradient-hero: linear-gradient(135deg, #0a0e1a 0%, #1a1040 50%, #0a0e1a 100%);
+    --gradient-card: linear-gradient(145deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.05));
+
+    /* Typography */
+    --font-primary: 'Inter', sans-serif;
+    --font-display: 'Outfit', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+
+    /* Font Sizes */
+    --text-xs: 0.75rem;
+    --text-sm: 0.875rem;
+    --text-base: 1rem;
+    --text-lg: 1.125rem;
+    --text-xl: 1.25rem;
+    --text-2xl: 1.5rem;
+    --text-3xl: 1.875rem;
+    --text-4xl: 2.25rem;
+    --text-5xl: 3rem;
+    --text-6xl: 3.75rem;
+
+    /* Spacing */
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.25rem;
+    --space-6: 1.5rem;
+    --space-8: 2rem;
+    --space-10: 2.5rem;
+    --space-12: 3rem;
+    --space-16: 4rem;
+    --space-20: 5rem;
+    --space-24: 6rem;
+
+    /* Border Radius */
+    --radius-sm: 0.375rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+    --radius-xl: 1rem;
+    --radius-2xl: 1.5rem;
+    --radius-full: 9999px;
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
+    --shadow-glow-primary: 0 0 40px rgba(59, 130, 246, 0.15);
+    --shadow-glow-accent: 0 0 40px rgba(16, 185, 129, 0.15);
+
+    /* Transitions */
+    --transition-fast: 150ms ease;
+    --transition-base: 250ms ease;
+    --transition-slow: 400ms ease;
+    --transition-spring: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    /* Z-Index */
+    --z-dropdown: 100;
+    --z-sticky: 200;
+    --z-modal: 300;
+    --z-toast: 400;
+
+    /* Layout */
+    --max-width: 1280px;
+    --sidebar-width: 280px;
+    --header-height: 72px;
+
+    /* Semantic Colors for Theme Switching */
+    --heading-color: #ffffff;
+    --text-color: #cbd5e1;
+    --input-bg: rgba(15, 23, 42, 0.6);
+    --input-color: #ffffff;
+    --btn-text: #ffffff;
+}
+
+:root[data-theme="light"] {
+    /* Surfaces */
+    --surface-bg: #f8fafc;
+    --surface-card: #ffffff;
+    --surface-card-hover: #f1f5f9;
+    --surface-glass: rgba(255, 255, 255, 0.85);
+    --surface-glass-border: rgba(0, 0, 0, 0.08);
+    --surface-overlay: rgba(255, 255, 255, 0.8);
+
+    /* Gradients */
+    --gradient-hero: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 50%, #f8fafc 100%);
+    --gradient-card: linear-gradient(145deg, rgba(59, 130, 246, 0.06), rgba(139, 92, 246, 0.03));
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.08);
+    --shadow-glow-primary: 0 4px 15px rgba(59, 130, 246, 0.15);
+    --shadow-glow-accent: 0 4px 15px rgba(16, 185, 129, 0.15);
+
+    /* Text */
+    --text-color: #334155;
+    --heading-color: #0f172a;
+    --input-bg: #ffffff;
+    --input-color: #0f172a;
+    --btn-text: #ffffff;
+
+    /* Neutrals overrides for light */
+    --gray-300: #475569;
+    --gray-400: #64748b;
+    --gray-500: #94a3b8;
+    --gray-600: #cbd5e1;
+    --gray-700: #e2e8f0;
+
+    /* Component-specific backgrounds */
+    --navbar-scrolled-bg: rgba(255, 255, 255, 0.9);
+    --sidebar-bg: #ffffff;
+    --topbar-bg: rgba(255, 255, 255, 0.9);
+    --playground-sidebar-bg: #f1f5f9;
+    --demo-output-bg: #f1f5f9;
+    --grid-line-color: rgba(0, 0, 0, 0.04);
+}

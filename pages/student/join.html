@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Darsga qo'shilish - Ustoz Ko'makchi</title>
+    <link rel="shortcut icon" href="../../assets/img/logo.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --accent-glow: rgba(79, 70, 229, 0.4);
+            --accent-color: #4f46e5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background: radial-gradient(circle at top right, #1e1b4b, #0f172a);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        .bg-blobs {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .blob {
+            position: absolute;
+            background: var(--accent-color);
+            filter: blur(80px);
+            border-radius: 50%;
+            opacity: 0.15;
+            animation: move 20s infinite alternate;
+        }
+
+        .blob-1 { width: 400px; height: 400px; top: -100px; left: -100px; background: #4f46e5; }
+        .blob-2 { width: 300px; height: 300px; bottom: -50px; right: -50px; background: #06b6d4; }
+
+        @keyframes move {
+            from { transform: translate(0, 0); }
+            to { transform: translate(50px, 50px); }
+        }
+
+        .join-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo-section {
+            margin-bottom: 30px;
+        }
+
+        .logo-section i {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #4f46e5, #06b6d4);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        p {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #cbd5e1;
+            margin-bottom: 8px;
+            margin-left: 5px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+            font-size: 1.1rem;
+        }
+
+        input {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 14px 15px 14px 45px;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 4px var(--accent-glow);
+            background: rgba(15, 23, 42, 0.8);
+        }
+
+        .pin-input {
+            letter-spacing: 4px;
+            font-weight: 700;
+            text-align: center;
+            padding-left: 15px !important;
+            font-size: 1.5rem;
+        }
+
+        .pin-input::placeholder {
+            letter-spacing: 0;
+            font-weight: 400;
+            font-size: 1rem;
+        }
+
+        .btn-join {
+            width: 100%;
+            background: linear-gradient(135deg, #4f46e5, #06b6d4);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-join:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.4);
+            filter: brightness(1.1);
+        }
+
+        .btn-join:active {
+            transform: translateY(0);
+        }
+
+        .footer-links {
+            margin-top: 25px;
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+
+        .footer-links a {
+            color: #4f46e5;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        .error-msg {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #f87171;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        @media (max-width: 480px) {
+            .join-card {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <div class="join-card">
+        <div class="logo-section">
+            <i class="fas fa-graduation-cap"></i>
+            <h1>Darsga qo'shilish</h1>
+            <p>O'qituvchi bergan PIN-kodni kiriting</p>
+        </div>
+
+        <div id="error-box" class="error-msg"></div>
+
+        <div class="form-group">
+            <label for="fullName">Ismingiz va familiyangiz</label>
+            <div class="input-wrapper">
+                <i class="fas fa-user"></i>
+                <input type="text" id="fullName" placeholder="Masalan: Azizbek Ergashev" autocomplete="off">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="pinCode">PIN Kod</label>
+            <div class="input-wrapper">
+                <input type="text" id="pinCode" class="pin-input" placeholder="000 000" maxlength="7" autocomplete="off">
+            </div>
+        </div>
+
+        <button class="btn-join" onclick="handleJoin()">
+            <span>Kirish</span>
+            <i class="fas fa-arrow-right"></i>
+        </button>
+
+        <div class="footer-links">
+            O'qituvchimisiz? <a href="../auth/login.html">Boshqaruv paneli</a>
+        </div>
+    </div>
+
+    <script>
+        // Check for PIN in URL
+        window.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const pinFromUrl = params.get('pin');
+            if(pinFromUrl) {
+                const pinInput = document.getElementById('pinCode');
+                let value = pinFromUrl.replace(/\D/g, '');
+                if (value.length > 3) {
+                    value = value.slice(0, 3) + ' ' + value.slice(3, 6);
+                }
+                pinInput.value = value;
+            }
+        });
+
+        const pinInput = document.getElementById('pinCode');
+        pinInput.addEventListener('input', (e) => {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 3) {
+                value = value.slice(0, 3) + ' ' + value.slice(3, 6);
+            }
+            e.target.value = value;
+        });
+
+        function handleJoin() {
+            const name = document.getElementById('fullName').value.trim();
+            const pin = document.getElementById('pinCode').value.replace(/\s/g, '');
+            const errorBox = document.getElementById('error-box');
+
+            if (name.length < 3) {
+                showError("Iltimos, ismingizni kiriting");
+                return;
+            }
+
+            if (pin.length < 6) {
+                showError("PIN-kodni kiriting");
+                return;
+            }
+
+            const btn = document.querySelector('.btn-join');
+            const originalBtnText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Kirilmoqda...';
+            btn.disabled = true;
+
+            fetch('../../api/student/join_quiz.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ pin: pin, name: name })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    localStorage.setItem('studentName', name);
+                    localStorage.setItem('activePin', pin);
+                    
+                    
+                    const params = new URLSearchParams(window.location.search);
+                    const mode = data.mode || params.get('mode');
+
+                    if (mode === 'duel') {
+                        window.location.href = '../../webapp/pages/student/duel.html';
+                    } else if (mode === 'tournament') {
+                        window.location.href = '../../webapp/pages/student/tournament.html';
+                    } else {
+                        window.location.href = '../../webapp/pages/student/lobby.html';
+                    }
+                } else {
+                    showError(data.error || "Ulanib bo'lmadi");
+                    btn.innerHTML = originalBtnText;
+                    btn.disabled = false;
+                }
+            })
+            .catch(err => {
+                showError("Server bilan aloqa uzildi");
+                btn.innerHTML = originalBtnText;
+                btn.disabled = false;
+            });
+        }
+
+        function showError(msg) {
+            const errorBox = document.getElementById('error-box');
+            errorBox.textContent = msg;
+            errorBox.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

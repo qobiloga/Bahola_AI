@@ -1,0 +1,286 @@
+/* ============================================
+   Ustoz ko'makchi - Auth Pages Styles
+   ============================================ */
+
+.auth-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-8);
+    position: relative;
+}
+
+.auth-container {
+    width: 100%;
+    max-width: 460px;
+    position: relative;
+    z-index: 1;
+}
+
+.auth-card {
+    background: var(--surface-card);
+    border: 1px solid var(--surface-glass-border);
+    border-radius: var(--radius-2xl);
+    padding: var(--space-10);
+    animation: fadeInUp 0.6s ease both;
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: var(--space-8);
+}
+
+.auth-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-6);
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 700;
+    color: var(--heading-color);
+}
+
+.auth-title {
+    font-size: var(--text-2xl);
+    font-weight: 800;
+    margin-bottom: var(--space-2);
+}
+
+.auth-subtitle {
+    font-size: var(--text-sm);
+    color: var(--gray-500);
+}
+
+/* Role Selector */
+.role-selector {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+    margin-bottom: var(--space-6);
+}
+
+.role-option {
+    position: relative;
+}
+
+.role-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.role-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-4);
+    background: var(--surface-glass);
+    border: 2px solid var(--surface-glass-border);
+    border-radius: var(--radius-xl);
+    cursor: pointer;
+    transition: all var(--transition-base);
+    text-align: center;
+}
+
+.role-label:hover {
+    border-color: rgba(59, 130, 246, 0.3);
+    background: rgba(59, 130, 246, 0.05);
+}
+
+.role-option input[type="radio"]:checked + .role-label {
+    border-color: var(--primary-500);
+    background: rgba(59, 130, 246, 0.1);
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+}
+
+.role-icon {
+    font-size: 28px;
+}
+
+.role-name {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--heading-color);
+}
+
+.role-desc {
+    font-size: var(--text-xs);
+    color: var(--gray-500);
+}
+
+/* Google Login */
+.google-btn {
+    width: 100%;
+    padding: var(--space-4) var(--space-5);
+    background: #ffffff;
+    border: 1px solid #dadce0;
+    border-radius: var(--radius-lg);
+    color: #3c4043;
+    font-weight: 600;
+    font-size: var(--text-base);
+    font-family: 'Roboto', 'Inter', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    transition: all var(--transition-base);
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    letter-spacing: 0.01em;
+}
+
+.google-btn:hover {
+    background: #f8f9fa;
+    border-color: #c6c9cc;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    transform: translateY(-1px);
+}
+
+.google-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+    background: #f1f3f4;
+}
+
+.google-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Auth Info Note */
+.auth-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    margin-top: var(--space-5);
+    padding: var(--space-3) var(--space-4);
+    background: rgba(59, 130, 246, 0.06);
+    border: 1px solid rgba(59, 130, 246, 0.12);
+    border-radius: var(--radius-lg);
+    font-size: var(--text-xs);
+    color: var(--gray-500);
+}
+
+/* Form specific */
+.auth-form .form-group {
+    margin-bottom: var(--space-4);
+}
+
+.auth-form .form-input {
+    padding: var(--space-3) var(--space-4);
+    padding-left: var(--space-10);
+}
+
+.input-icon-wrapper {
+    position: relative;
+}
+
+.input-icon {
+    position: absolute;
+    left: var(--space-3);
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gray-500);
+    pointer-events: none;
+}
+
+.password-toggle {
+    position: absolute;
+    right: var(--space-3);
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gray-500);
+    padding: var(--space-1);
+    cursor: pointer;
+    transition: color var(--transition-base);
+}
+
+.password-toggle:hover {
+    color: var(--gray-300);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+}
+
+.auth-submit {
+    width: 100%;
+    margin-top: var(--space-2);
+}
+
+.auth-footer {
+    text-align: center;
+    margin-top: var(--space-6);
+    font-size: var(--text-sm);
+    color: var(--gray-500);
+}
+
+.auth-footer a {
+    color: var(--primary-400);
+    font-weight: 600;
+}
+
+.auth-footer a:hover {
+    color: var(--primary-300);
+}
+
+/* Back to home link */
+.back-home {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--gray-500);
+    font-size: var(--text-sm);
+    margin-bottom: var(--space-6);
+    transition: color var(--transition-base);
+}
+
+.back-home:hover {
+    color: var(--primary-400);
+}
+
+/* Alert Messages */
+.alert {
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-lg);
+    font-size: var(--text-sm);
+    margin-bottom: var(--space-4);
+    display: none;
+}
+
+.alert.show {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    animation: fadeInDown 0.3s ease;
+}
+
+.alert-error {
+    background: rgba(244, 63, 94, 0.1);
+    border: 1px solid rgba(244, 63, 94, 0.2);
+    color: var(--error-400);
+}
+
+.alert-success {
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    color: var(--accent-400);
+}
+
+@media (max-width: 480px) {
+    .auth-card {
+        padding: var(--space-6);
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏆 Turnir Live — Bahola Ai</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Outfit',sans-serif; }
+        body { background:#0f0a1e; color:#fff; min-height:100vh; display:flex; flex-direction:column; overflow:hidden; }
+        
+        .header {
+            padding: 20px 40px; display: flex; justify-content: space-between; align-items: center;
+            background: rgba(0,0,0,0.3); border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .title { font-size: 1.8rem; font-weight: 800; display:flex; align-items:center; gap:10px; }
+        .pin-box { background: rgba(16,185,129,0.1); border: 1px solid #10b981; padding: 10px 20px; border-radius: 12px; font-size: 1.5rem; font-weight: 800; letter-spacing: 5px; color: #10b981; }
+        
+        .main-content {
+            flex: 1; padding: 30px; display: flex; flex-direction: column; overflow-y: auto; overflow-x: auto;
+        }
+
+        /* ===== LOBBY ===== */
+        .lobby-screen { display: flex; align-items: flex-start; justify-content: center; gap: 50px; flex-wrap: wrap; height: 100%; }
+        .qr-card { background: rgba(255,255,255,0.05); padding: 40px; border-radius: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.1); }
+        .qr-card img { width: 300px; height: 300px; border-radius: 15px; margin-bottom: 20px; }
+        .players-card { background: rgba(255,255,255,0.05); padding: 30px; border-radius: 20px; min-width: 400px; min-height: 400px; max-height: 600px; overflow-y: auto; border: 1px solid rgba(255,255,255,0.1); }
+        .players-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+        .player-tag { background: rgba(16,185,129,0.1); color: #10b981; border: 1px solid rgba(16,185,129,0.3); padding: 10px 20px; border-radius: 30px; font-weight: 600; font-size: 1.1rem; }
+        
+        .btn { padding: 15px 40px; border-radius: 12px; font-size: 1.2rem; font-weight: 700; border: none; cursor: pointer; transition: 0.3s; color:#000; }
+        .btn-primary { background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(245, 158, 11, 0.4); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none!important; box-shadow: none!important; }
+
+        /* ===== BRACKET ===== */
+        .bracket-screen { display: none; width: 100%; height: 100%; align-items: center; justify-content: flex-start; overflow-x: auto; padding: 20px; }
+        .round-column { display: flex; flex-direction: column; justify-content: space-around; min-width: 250px; margin-right: 50px; position: relative; }
+        .round-title { text-align: center; font-size: 1.2rem; font-weight: 700; color: #94a3b8; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; }
+        
+        .matchup {
+            background: rgba(30,41,59, 0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
+            margin-bottom: 20px; position: relative; width: 100%; box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .matchup.active { border-color: #f59e0b; box-shadow: 0 0 20px rgba(245, 158, 11, 0.3); }
+        .matchup.completed { border-color: #10b981; opacity: 0.8; }
+        
+        .player-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .player-row:last-child { border-bottom: none; }
+        .player-row.winner { background: rgba(16,185,129,0.15); font-weight: 700; color: #10b981; }
+        .player-row.loser { opacity: 0.4; text-decoration: line-through; }
+        
+        .p-name { font-size: 1.1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px; }
+        .p-score { font-size: 1.2rem; font-weight: 900; background: rgba(0,0,0,0.3); padding: 4px 10px; border-radius: 6px; }
+        
+        /* Connectors */
+        .connector { position: absolute; right: -50px; width: 50px; border-right: 2px solid rgba(255,255,255,0.2); border-top: 2px solid rgba(255,255,255,0.2); border-bottom: 2px solid rgba(255,255,255,0.2); z-index: -1; }
+        
+        /* Control Bar */
+        .control-bar {
+            position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(15,23,42,0.95);
+            backdrop-filter: blur(10px); padding: 20px 40px; display: flex; justify-content: space-between;
+            align-items: center; border-top: 1px solid rgba(255,255,255,0.1); z-index: 100;
+        }
+        .status-text { font-size: 1.2rem; font-weight: 600; color: #f59e0b; }
+
+        /* Match View */
+        .live-matches { display: none; width: 100%; height: 100%; flex-direction: column; }
+        .matches-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; margin-top: 20px; }
+        .match-card {
+            background: rgba(30,41,59, 0.9); border-radius: 16px; padding: 20px; border: 1px solid rgba(255,255,255,0.1);
+        }
+        .mc-header { display: flex; justify-content: space-between; color: #94a3b8; font-size: 0.9rem; margin-bottom: 15px; }
+        .mc-vs { display: flex; justify-content: space-between; align-items: center; font-size: 1.4rem; font-weight: 700; }
+        .mc-score { font-size: 2rem; color: #10b981; }
+
+        /* Champion */
+        .champion-screen { display: none; height: 100%; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        .trophy { font-size: 8rem; animation: bounce 2s infinite; }
+        .champ-title { font-size: 4rem; font-weight: 900; background: linear-gradient(135deg, #f59e0b, #fbbf24); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 20px 0; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="title">🏆 Mintaqaviy Turnir</div>
+        <div class="pin-box" id="displayPin">--- ---</div>
+    </div>
+
+    <div class="main-content">
+        <!-- LOBBY -->
+        <div class="lobby-screen" id="lobbyScreen">
+            <div class="qr-card">
+                <div id="qrCode"></div>
+                <h2 style="margin-bottom:10px;">Turnir PIN kodi</h2>
+                <div style="font-size: 3rem; font-weight: 900; letter-spacing: 5px; color:#f59e0b;" id="lobbyPin">--- ---</div>
+            </div>
+            <div class="players-card">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <h2 style="font-size: 1.5rem;">Ishtirokchilar</h2>
+                    <span style="background:#10b981; padding: 5px 15px; border-radius: 20px; font-weight:bold;" id="pCount">0 ta</span>
+                </div>
+                <div class="players-grid" id="playersGrid">
+                    <!-- Players will be injected here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- BRACKET -->
+        <div class="bracket-screen" id="bracketScreen">
+            <!-- Bracket will be injected here via JS -->
+        </div>
+
+        <!-- MATCHES (LIVE) -->
+        <div class="live-matches" id="liveMatchesScreen">
+            <h2 style="font-size: 2rem; margin-bottom: 10px;">⚔️ Jonli Kuzatuv (<span id="lmRound">Raund 1</span>)</h2>
+            <div class="matches-grid" id="liveMatchesGrid">
+                <!-- Live matches injected here -->
+            </div>
+        </div>
+
+        <!-- CHAMPION -->
+        <div class="champion-screen" id="championScreen">
+            <div class="trophy">🏆</div>
+            <h1 class="champ-title" id="champName">...</h1>
+            <h2 style="color: #94a3b8;">Mutlaq Chempion!</h2>
+            <button class="btn btn-primary" style="margin-top:40px;" onclick="window.location.href='dashboard.html'">Dashboardga qaytish</button>
+        </div>
+    </div>
+
+    <div class="control-bar" id="controlBar" style="display:none;">
+        <div class="status-text" id="statusText">Holat: ...</div>
+        <div style="display:flex; gap:15px;">
+            <button class="btn" style="background:rgba(255,255,255,0.1); color:#fff;" id="btnViewToggle">Qarama-qarshiliklarni ko'rish</button>
+            <button class="btn btn-primary" id="btnMainAction">Raundni Boshlash</button>
+        </div>
+    </div>
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const quizData = JSON.parse(localStorage.getItem('currentQuizData') || '{}');
+    const curPin = urlParams.get('pin') || quizData.pin;
+
+    if (!curPin) {
+        alert("Turnir PIN kodi topilmadi!");
+        window.location.href = 'dashboard.html';
+    }
+
+    document.getElementById('displayPin').textContent = curPin.toString().replace(/(\d{3})(\d{3})/, '$1 $2');
+    document.getElementById('lobbyPin').textContent = curPin.toString().replace(/(\d{3})(\d{3})/, '$1 $2');
+
+    const joinUrl = new URL('../../pages/student/join.html', window.location.href);
+    joinUrl.searchParams.set('pin', curPin);
+    joinUrl.searchParams.set('mode', 'tournament');
+    document.getElementById('qrCode').innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(joinUrl.toString())}" alt="QR">`;
+
+    let currentState = null;
+    let pollInterval = null;
+    let viewMode = 'bracket'; // bracket or matches
+
+    // UI Elements
+    const screenLobby = document.getElementById('lobbyScreen');
+    const screenBracket = document.getElementById('bracketScreen');
+    const screenLive = document.getElementById('liveMatchesScreen');
+    const screenChamp = document.getElementById('championScreen');
+    const controlBar = document.getElementById('controlBar');
+    const statusText = document.getElementById('statusText');
+    const btnMain = document.getElementById('btnMainAction');
+    const btnToggle = document.getElementById('btnViewToggle');
+
+    // Polling logic
+    function startPolling() {
+        if(pollInterval) clearInterval(pollInterval);
+        pollInterval = setInterval(fetchState, 1500);
+    }
+
+    async function fetchState() {
+        try {
+            const res = await fetch(`../../api/teacher/get_tournament_state.php?pin=${curPin}`);
+            const data = await res.json();
+            if (data.success) {
+                updateUI(data);
+            }
+        } catch(e) { console.error("Poll err:", e); }
+    }
+
+    function updateUI(data) {
+        currentState = data;
+
+        if (data.status === 'waiting') {
+            // Lobby Phase
+            screenLobby.style.display = 'flex';
+            controlBar.style.display = 'flex';
+            document.getElementById('pCount').textContent = data.participant_count + ' ta';
+            
+            const grid = document.getElementById('playersGrid');
+            grid.innerHTML = data.participants.map(p => `<div class="player-tag">${p.student_name}</div>`).join('');
+            
+            statusText.textContent = "O'quvchilarni kuting...";
+            btnMain.textContent = "Turnirga Start Berish";
+            btnMain.disabled = data.participant_count < 2;
+            btnMain.onclick = () => doAction('start');
+
+        } else if (data.status === 'active') {
+            screenLobby.style.display = 'none';
+            controlBar.style.display = 'flex';
+            
+            if (viewMode === 'bracket') {
+                screenBracket.style.display = 'flex';
+                screenLive.style.display = 'none';
+                renderBracket(data);
+            } else {
+                screenBracket.style.display = 'none';
+                screenLive.style.display = 'flex';
+                renderLiveMatches(data);
+            }
+
+            // Determine what the current round needs
+            const currentRound = data.current_round;
+            const matchesOfRound = data.rounds[currentRound] || [];
+            
+            let allPending = matchesOfRound.every(m => m.status === 'pending' || m.status === 'completed' && !m.player2_name);
+            let anyActive = matchesOfRound.some(m => m.status === 'active');
+            let allCompleted = matchesOfRound.every(m => m.status === 'completed');
+
+            if (allPending) {
+                statusText.textContent = `${currentRound}-Raund tayyor`;
+                btnMain.textContent = "Matchlarni Boshlash";
+                btnMain.disabled = false;
+                btnMain.onclick = () => doAction('start_matches');
+            } else if (anyActive) {
+                statusText.textContent = `${currentRound}-Raund: Savol berilmoqda...`;
+                btnMain.textContent = "Keyingi Savol >";
+                btnMain.disabled = false;
+                btnMain.onclick = () => doAction('next_question');
+            } else if (allCompleted) {
+                statusText.textContent = `${currentRound}-Raund tugadi!`;
+                btnMain.textContent = "Keyingi Raundni Tuzish";
+                btnMain.disabled = false;
+                btnMain.onclick = () => doAction('next_round');
+            }
+
+        } else if (data.status === 'finished') {
+            screenLobby.style.display = 'none';
+            screenBracket.style.display = 'none';
+            screenLive.style.display = 'none';
+            controlBar.style.display = 'none';
+            screenChamp.style.display = 'flex';
+            document.getElementById('champName').textContent = data.champion;
+            clearInterval(pollInterval);
+        }
+    }
+
+    btnToggle.onclick = () => {
+        viewMode = (viewMode === 'bracket') ? 'matches' : 'bracket';
+        btnToggle.textContent = (viewMode === 'bracket') ? "Matchlarni ko'rish" : "Bracketni ko'rish";
+        if(currentState) updateUI(currentState);
+    };
+
+    async function doAction(action) {
+        btnMain.disabled = true;
+        btnMain.innerHTML = "Kuting...";
+        try {
+            const res = await fetch('../../api/teacher/advance_tournament.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ pin: curPin, action: action })
+            });
+            const data = await res.json();
+            if(!data.success) {
+                alert("Xato: " + data.error);
+            }
+            fetchState(); // instant refresh
+        } catch(e) { console.error(e); }
+    }
+
+    function renderBracket(data) {
+        const container = document.getElementById('bracketScreen');
+        container.innerHTML = '';
+        
+        const totalRounds = Math.max(...Object.keys(data.rounds).map(Number));
+        if (totalRounds < 1) return;
+
+        for (let r = 1; r <= totalRounds; r++) {
+            const matches = data.rounds[r] || [];
+            
+            const col = document.createElement('div');
+            col.className = 'round-column';
+            
+            const title = document.createElement('div');
+            title.className = 'round-title';
+            title.textContent = (r === totalRounds && totalRounds > 1) ? 'Final' : `Raund ${r}`;
+            col.appendChild(title);
+
+            matches.forEach(m => {
+                const isP1Winner = m.winner_name === m.player1_name;
+                const isP2Winner = m.winner_name === m.player2_name;
+                const p2Name = m.player2_name || '(BYE)';
+
+                let boxClass = 'matchup';
+                if(m.status === 'active') boxClass += ' active';
+                if(m.status === 'completed') boxClass += ' completed';
+
+                col.innerHTML += `
+                    <div class="${boxClass}">
+                        <div class="player-row ${isP1Winner ? 'winner' : ''} ${m.status==='completed' && !isP1Winner ? 'loser':''}">
+                            <div class="p-name">${m.player1_name}</div>
+                            <div class="p-score">${m.player1_score}</div>
+                        </div>
+                        <div class="player-row ${isP2Winner ? 'winner' : ''} ${m.status==='completed' && !isP2Winner ? 'loser':''}">
+                            <div class="p-name">${p2Name}</div>
+                            <div class="p-score">${m.player2_score}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            container.appendChild(col);
+        }
+    }
+
+    function renderLiveMatches(data) {
+        const round = data.current_round;
+        document.getElementById('lmRound').textContent = `Raund ${round}`;
+        const grid = document.getElementById('liveMatchesGrid');
+        
+        const matches = data.rounds[round] || [];
+        grid.innerHTML = matches.map(m => {
+            const p2Name = m.player2_name || '(BYE)';
+            const qCount = m.questions_used ? JSON.parse(m.questions_used).length : 0;
+            return `
+                <div class="match-card">
+                    <div class="mc-header">
+                        <span>Match #${m.match_index + 1}</span>
+                        <span>Savol: ${m.current_question} / ${qCount}</span>
+                    </div>
+                    <div class="mc-vs">
+                        <div style="text-align:left;">
+                            <div style="font-size:1.2rem; color:${m.winner_name === m.player1_name ? '#10b981':'#fff'};">${m.player1_name}</div>
+                            <div class="mc-score">${m.player1_score}</div>
+                        </div>
+                        <div style="color:#f59e0b; font-size:2rem;">VS</div>
+                        <div style="text-align:right;">
+                            <div style="font-size:1.2rem; color:${m.winner_name === m.player2_name ? '#10b981':'#fff'};">${p2Name}</div>
+                            <div class="mc-score">${m.player2_score}</div>
+                        </div>
+                    </div>
+                    <div style="text-align:center; margin-top:15px; font-size:0.9rem; color:#94a3b8;">
+                        Holat: <strong style="color:#fff;">${m.status.toUpperCase()}</strong>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    // Initialize
+    fetchState();
+    startPolling();
+
+</script>
+</body>
+</html>

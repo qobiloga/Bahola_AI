@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O'tkazilgan Turnirlar — Bahola Ai</title>
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="../../index.html" class="sidebar-logo">
+                    <svg width="28" height="28" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="url(#slg)"/><path d="M8 20L16 10L24 20" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="slg" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#3b82f6"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs></svg>
+                    Bahola <span class="text-gradient">Ai</span>
+                </a>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <a href="dashboard.html" class="sidebar-link">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                        Asosiy
+                    </a>
+                    <a href="quiz-generator.html" class="sidebar-link">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"></path><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                        Jamoaviy AI Viktorina yaratish
+                    </a>
+                    <a href="test-creator.html" class="sidebar-link">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+                        Individual test o'quvchilarga
+                    </a>
+                    <a href="tf-creator.html" class="sidebar-link">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                        True/False o'yin yaratish
+                    </a>
+                    <a href="duel-creator.html" class="sidebar-link">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+                        Talaba VS AI Duel
+                    </a>
+                    <a href="tournament-creator.html" class="sidebar-link">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg>
+                        O'quvchilar Turniri
+                    </a>
+
+                    <div style="border-top:1px solid rgba(255,255,255,0.05); margin: 15px 0; padding-top:15px;"></div>
+                    
+                    <a href="statistics.html" class="sidebar-link">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                        Statistika
+                    </a>
+                    <a href="tournament-history.html" class="sidebar-link active" style="color:#60a5fa;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        O'tkazilgan Turnirlar tarixi
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <main class="dashboard-main">
+            <div class="topbar">
+                <div class="topbar-title">
+                    <h2>🕒 O'tkazilgan Turnirlar tarixi</h2>
+                    <p>Barcha o'yin turlari bo'yicha arxivlangan natijalar</p>
+                </div>
+                <div class="topbar-actions" style="display:flex; align-items:center; gap:15px;">
+                    <button class="theme-toggle btn btn-icon" id="themeToggle" title="Temani o'zgartirish" style="color:var(--heading-color); background:rgba(255,255,255,0.05); border:none; padding:8px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center;">
+                        <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                        <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                    </button>
+                    <div class="user-profile" style="display:flex; align-items:center; gap:10px;">
+                        <div class="user-avatar" id="topAvatar" style="width:40px; height:40px; border-radius:50%; background:var(--primary-500); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700;">O'</div>
+                        <div class="user-info" style="display:flex; flex-direction:column;">
+                            <h4 id="topName" style="margin:0; font-size:0.95rem; color:var(--heading-color);">O'qituvchi</h4>
+                            <p style="margin:0; font-size:0.8rem; color:var(--gray-400);">Tarix fani</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-content">
+                <div class="dashboard-card animate-fade-in-up">
+                    <div class="dashboard-card-body" style="padding:0;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Turi</th>
+                                    <th>Mavzu / Nomi</th>
+                                    <th>Sana</th>
+                                    <th>Qatnashuvchilar</th>
+                                    <th>G'olib / Natija</th>
+                                    <th>Amal</th>
+                                </tr>
+                            </thead>
+                            <tbody id="historyBody">
+                                <!-- Dummy Data -->
+                                <tr>
+                                    <td><span class="badge" style="background:rgba(139,92,246,0.1); color:#8b5cf6;">🏆 Turnir</span></td>
+                                    <td><strong>Matematika Mintaqaviy</strong></td>
+                                    <td>Bugun, 10:45</td>
+                                    <td>32 ta</td>
+                                    <td><span style="color:#10b981; font-weight:600;">Jasur Karimov</span></td>
+                                    <td><button class="btn btn-sm btn-secondary">Ko'rish</button></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge" style="background:rgba(244,63,94,0.1); color:#f43f5e;">⚔️ Duel</span></td>
+                                    <td><strong>Informatika: AI VS Talaba</strong></td>
+                                    <td>Kecha, 16:20</td>
+                                    <td>1 ta</td>
+                                    <td><span style="color:#f43f5e; font-weight:600;">AI (9/10)</span></td>
+                                    <td><button class="btn btn-sm btn-secondary">Ko'rish</button></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge" style="background:rgba(16,185,129,0.1); color:#10b981;">🎲 Jamoaviy</span></td>
+                                    <td><strong>Fizika Qonunlari</strong></td>
+                                    <td>01.04.2026</td>
+                                    <td>24 ta</td>
+                                    <td><span style="color:var(--gray-300);">O'rtacha 78%</span></td>
+                                    <td><button class="btn btn-sm btn-secondary">Ko'rish</button></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge" style="background:rgba(245,158,11,0.1); color:#f59e0b;">✅ True/False</span></td>
+                                    <td><strong>Ingliz tili: Grammatika</strong></td>
+                                    <td>31.03.2026</td>
+                                    <td>18 ta</td>
+                                    <td><span style="color:var(--gray-300);">O'rtacha 92%</span></td>
+                                    <td><button class="btn btn-sm btn-secondary">Ko'rish</button></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge" style="background:rgba(59,130,246,0.1); color:#3b82f6;">📝 Individual</span></td>
+                                    <td><strong>Logika va Algoritmlar</strong></td>
+                                    <td>30.03.2026</td>
+                                    <td>15 ta</td>
+                                    <td><span style="color:var(--gray-300);">Top: Nilufar A.</span></td>
+                                    <td><button class="btn btn-sm btn-secondary">Ko'rish</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div style="margin-top:24px; text-align:center; color:var(--gray-400); font-size:0.9rem;">
+                    💡 Ma'lumotlar avtomatik ravishda har bir o'yin yakunlanganda saqlanadi.
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const user = JSON.parse(localStorage.getItem('smartedu_user') || '{}');
+        if (!user.id) window.location.href = '../auth/login.html';
+        
+        // Update topbar profile
+        if (user.full_name) {
+            document.getElementById('topName').textContent = user.full_name;
+            document.getElementById('topAvatar').textContent = user.full_name.charAt(0).toUpperCase();
+        }
+
+        async function loadHistory() {
+            try {
+                const res = await fetch(`../../api/teacher/get_game_history.php?teacher_id=${user.id}`);
+                const data = await res.json();
+                if (data.success) renderHistory(data.history);
+            } catch (err) { console.error(err); }
+        }
+
+        function renderHistory(list) {
+            const body = document.getElementById('historyBody');
+            body.innerHTML = '';
+            
+            if(!list.length) {
+                body.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:40px; color:var(--gray-500);">Hali o\'yinlar o\'tkazilmagan</td></tr>';
+                return;
+            }
+
+            const types = {
+                'team_quiz': { label: '🎲 Jamoaviy', bg: 'rgba(16,185,129,0.1)', color: '#10b981' },
+                'individual_test': { label: '📝 Individual', bg: 'rgba(59,130,246,0.1)', color: '#3b82f6' },
+                'true_false': { label: '✅ True/False', bg: 'rgba(245,158,11,0.1)', color: '#f59e0b' },
+                'duel': { label: '⚔️ Duel', bg: 'rgba(244,63,94,0.1)', color: '#f43f5e' },
+                'tournament': { label: '🏆 Turnir', bg: 'rgba(139,92,246,0.1)', color: '#8b5cf6' }
+            };
+
+            list.forEach(item => {
+                const t = types[item.type] || { label: item.type, bg: '#333', color: '#fff' };
+                const date = new Date(item.created_at).toLocaleString('uz-UZ', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+                
+                let resultText = '<span style="color:var(--gray-500);">Yakunlanmagan</span>';
+                if(item.status === 'finished' || item.status === 'completed') {
+                    if(item.type === 'tournament') resultText = `<span style="color:#10b981; font-weight:600;">${item.winner || 'Noma\'lum'}</span>`;
+                    else {
+                        const sum = JSON.parse(item.summary || '{}');
+                        resultText = sum.winner ? `<span style="color:#10b981;">G'olib: ${sum.winner}</span>` : `<span style="color:var(--gray-300);">Top: ${sum.top_score || '78%'}</span>`;
+                    }
+                }
+
+                let topicName = item.topic || 'Nomsiz';
+                if (topicName.startsWith('[')) {
+                    try {
+                        let parsed = JSON.parse(topicName);
+                        if (Array.isArray(parsed)) {
+                            topicName = parsed.join(', ');
+                        }
+                    } catch (e) {}
+                }
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><span class="badge" style="background:${t.bg}; color:${t.color};">${t.label}</span></td>
+                    <td><strong>${topicName}</strong></td>
+                    <td style="font-size:0.85rem; color:var(--gray-400);">${date}</td>
+                    <td>--</td>
+                    <td>${resultText}</td>
+                    <td><button class="btn btn-sm btn-secondary">Ko'rish</button></td>
+                `;
+                body.appendChild(tr);
+            });
+        }
+
+        loadHistory();
+    </script>
+    <script src="../../assets/js/theme.js"></script>
+</body>
+</html>

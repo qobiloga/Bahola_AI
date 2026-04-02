@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Bahola Ai — O'qituvchilar uchun avtomatik baholash va feedback tizimi. AI yordamida testlarni tekshirish, mustaqil ishlarni baholash va talabalar uchun shaxsiy tavsiyalar.">
+    <title>Bahola Ai — Avtomatik Baholash Platformasi</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/landing.css">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🎓</text></svg>">
+    <script src="assets/js/theme.js"></script>
+</head>
+
+<body>
+    <!-- Animated Background -->
+    <div class="bg-effects">
+        <div class="bg-orb bg-orb-1"></div>
+        <div class="bg-orb bg-orb-2"></div>
+        <div class="bg-orb bg-orb-3"></div>
+        <div class="bg-grid"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="/" class="nav-logo">
+                <div class="logo-icon">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                        <rect width="32" height="32" rx="8" fill="url(#logo-grad)" />
+                        <path d="M8 20L16 10L24 20" stroke="white" stroke-width="2.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M12 17L16 13L20 17" stroke="white" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" opacity="0.6" />
+                        <defs>
+                            <linearGradient id="logo-grad" x1="0" y1="0" x2="32" y2="32">
+                                <stop stop-color="#3b82f6" />
+                                <stop offset="1" stop-color="#8b5cf6" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <span class="logo-text">Bahola <span class="text-gradient">Ai</span></span>
+            </a>
+
+            <div class="nav-links" id="navLinks">
+                <a href="#features" class="nav-link">Imkoniyatlar</a>
+                <a href="#how-it-works" class="nav-link">Qanday ishlaydi</a>
+                <a href="#pricing" class="nav-link">Tariflar</a>
+                <a href="#stats" class="nav-link">Statistika</a>
+                <div class="mobile-only-actions"
+                    style="margin-top: var(--space-8); display: flex; flex-direction: column; gap: var(--space-3);">
+                    <a href="pages/auth/login.html" class="btn btn-primary" style="width: 100%;">Tizimga kirish</a>
+                </div>
+            </div>
+
+            <div class="nav-actions">
+                <button id="themeToggle" class="btn btn-icon theme-toggle-btn" aria-label="Toggle Theme"
+                    style="color: var(--heading-color);">
+                    <svg class="sun-icon" style="display:none;" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+                <a href="pages/auth/login.html" class="btn btn-primary btn-sm">Tizimga kirish</a>
+            </div>
+
+            <button class="nav-toggle" id="navToggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge animate-fade-in-up">
+                    <span class="pulse-dot"></span>
+                    AI Hackathon 2026
+                </div>
+                <h1 class="hero-title animate-fade-in-up delay-1">
+                    Interaktivlik va kreativlik bilan <br>
+                    <span class="text-gradient">bilimingizni oshiring</span>
+                </h1>
+                <p class="hero-description animate-fade-in-up delay-2">
+                    AI yordamida yaratilgan real vaqt rejimli viktorinalar va interaktiv topshiriqlar orqali o'rganishni qiziqarli o'yinga aylantiring. Bilimingizni sinab ko'ring va natijalarni darhol oling.
+                </p>
+                <div class="hero-actions animate-fade-in-up delay-3">
+                    <a href="pages/auth/login.html" class="btn btn-primary btn-lg">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                        </svg>
+                        O'qituvchi bo'lib kirish
+                    </a>
+                    <a href="pages/student/join.html" class="btn btn-secondary btn-lg">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                        </svg>
+                        Darsga qo'shilish
+                    </a>
+                </div>
+            </div>
+            <div class="hero-visual animate-scale-in delay-3">
+                <div class="hero-mockup" style="position:relative; min-height:400px; display:flex; flex-direction:column;">
+                    <div class="mockup-header">
+                        <div class="mockup-dots">
+                            <span></span><span></span><span></span>
+                        </div>
+                        <span class="mockup-title" id="mHeroTitle">AI Turnir — Lobby</span>
+                        <span style="margin-left:auto;font-size:0.7rem;color:#10b981;font-weight:600;">● LIVE</span>
+                    </div>
+                    <div class="mockup-body" style="padding:0; position:relative; flex:1; overflow:hidden;">
+                        
+                        <!-- STAGE 0: AI GENERATOR -->
+                        <div class="m-stage m-phase" id="mStage0" style="position:absolute; inset:0; display:flex; flex-direction:column; padding:20px;">
+                            <div style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">
+                                <div class="ai-avatar ai-anim-avatar" style="width:36px; height:36px;"><div class="ai-loader-box"><span></span><span></span><span></span></div></div>
+                                <span style="font-weight:700; color:var(--primary-400); font-size:0.95rem;">AI Generator</span>
+                            </div>
+
+                            <!-- User prompt -->
+                            <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:12px 16px; margin-bottom:20px; align-self:flex-end; max-width:85%; transform:translateY(10px); animation:mFadeIn 0.5s forwards;">
+                                <p style="font-size:0.85rem; color:#e2e8f0; line-height:1.4;">"Amir Temur davlati" mavzusida 50 ta qiziqarli viktorina savoli tuzib ber.</p>
+                            </div>
+
+                            <!-- AI Generating & Success -->
+                            <div style="background:rgba(59,130,246,0.08); border:1px solid rgba(59,130,246,0.15); border-radius:12px; padding:15px; max-width:90%; position:relative; overflow:hidden; opacity:0; animation:mFadeIn 0.5s forwards 0.8s;">
+                                <!-- Loading View -->
+                                <div id="aiGenLoading">
+                                    <div style="font-size:0.8rem; color:var(--primary-300); margin-bottom:12px; display:flex; align-items:center; gap:8px; font-weight:600;">
+                                        Savollar tuzilmoqda... 
+                                        <div class="typing-indicator" style="transform:scale(0.8); margin-bottom:0;"><span></span><span></span><span></span></div>
+                                    </div>
+                                    <div style="width:100%; height:8px; background:rgba(255,255,255,0.08); border-radius:4px; margin-bottom:8px;"></div>
+                                    <div style="width:75%; height:8px; background:rgba(255,255,255,0.08); border-radius:4px; margin-bottom:8px;"></div>
+                                    <div style="width:50%; height:8px; background:rgba(255,255,255,0.08); border-radius:4px;"></div>
+                                    <div style="position:absolute; bottom:0; left:0; height:3px; background:var(--primary-500); width:100%; animation:mGenerateLoad 3s linear;"></div>
+                                </div>
+                                
+                                <!-- Success View -->
+                                <div id="aiGenSuccess" style="display:none; text-align:center; animation:mFadeIn 0.4s forwards;">
+                                    <div style="font-size:2rem; margin-bottom:5px;">✅</div>
+                                    <div style="font-size:0.85rem; color:#10b981; font-weight:800; margin-bottom:12px;">50 ta viktorina testi tuzildi!</div>
+                                    <button style="background:linear-gradient(135deg,#10b981,#059669); color:#fff; border:none; padding:8px 16px; border-radius:8px; font-size:0.75rem; font-weight:700; box-shadow:0 0 15px rgba(16,185,129,0.3); pointer-events:none;">▶ Boshlash bo'yicha</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- STAGE 1: LOBBY & QR -->
+                        <div class="m-stage" id="mStage1" style="position:absolute; inset:0; display:none; flex-direction:column; align-items:center; justify-content:center; padding:20px;">
+                            <p style="font-size:0.85rem; color:var(--gray-400); margin-bottom:15px; font-weight:600;">Turnirga qo'shiling</p>
+                            
+                            <div style="width:120px; height:120px; background:#fff; border-radius:12px; padding:8px; display:flex; align-items:center; justify-content:center; margin-bottom:15px; position:relative;">
+                                <div style="position:absolute; width:20px; height:20px; border:4px solid #000; top:12px; left:12px; border-radius:4px;"></div>
+                                <div style="position:absolute; width:20px; height:20px; border:4px solid #000; top:12px; right:12px; border-radius:4px;"></div>
+                                <div style="position:absolute; width:20px; height:20px; border:4px solid #000; bottom:12px; left:12px; border-radius:4px;"></div>
+                                <div style="width:80%; height:80%; background:radial-gradient(circle, #000 20%, transparent 20%); background-size:8px 8px; opacity:0.6;"></div>
+                                <div class="qr-scan-line" style="position:absolute; top:0; left:0; width:100%; height:2px; background:#10b981; box-shadow:0 0 12px #10b981; animation:qrScan 2s infinite alternate;"></div>
+                            </div>
+
+                            <div style="font-size:2.2rem; font-weight:900; letter-spacing:6px; color:var(--heading-color); margin-bottom:20px;">445 801</div>
+                            
+                            <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:center; width:100%;">
+                                <span class="m-chip m-chip-done">Azizbek ✅</span>
+                                <span class="m-chip m-chip-done">Nilufar ✅</span>
+                                <span class="m-chip m-chip-done">Jasur ✅</span>
+                                <span class="m-chip m-chip-wait">Kutish...</span>
+                            </div>
+                        </div>
+
+                        <!-- STAGE 2: BRACKET -->
+                        <div class="m-stage" id="mStage2" style="position:absolute; inset:0; display:none; flex-direction:column; align-items:center; justify-content:center; padding:20px; background:var(--surface-card);">
+                            <div style="background:rgba(59,130,246,0.1); padding:6px 16px; border-radius:20px; color:var(--primary-400); font-weight:700; font-size:0.8rem; margin-bottom:20px; border:1px solid rgba(59,130,246,0.2);">🏆 YARIM FINAL</div>
+                            
+                            <div style="display:flex; width:100%; justify-content:space-between; align-items:center;">
+                                <div style="flex:1; display:flex; flex-direction:column; gap:10px; border-right:2px solid rgba(255,255,255,0.1); padding-right:15px; position:relative;">
+                                    <div class="b-player b-win">Jasur <span style="margin-left:auto;">🔥</span></div>
+                                    <div class="b-player b-lose">Sardor <span>❌</span></div>
+                                    <div style="position:absolute; right:-2px; top:50%; width:10px; border-top:2px solid rgba(255,255,255,0.1);"></div>
+                                </div>
+                                <div style="width:50px; text-align:center; font-weight:900; font-size:1.2rem; color:var(--gray-500); font-style:italic;">VS</div>
+                                <div style="flex:1; display:flex; flex-direction:column; gap:10px; border-left:2px solid rgba(255,255,255,0.1); padding-left:15px; position:relative;">
+                                    <div class="b-player b-win">Azizbek <span style="margin-left:auto;">🔥</span></div>
+                                    <div class="b-player b-lose">Nilufar <span>❌</span></div>
+                                    <div style="position:absolute; left:-2px; top:50%; width:10px; border-top:2px solid rgba(255,255,255,0.1);"></div>
+                                </div>
+                            </div>
+                            <div style="margin-top:30px; font-size:0.85rem; color:var(--gray-400); font-weight:600; animation:pulse-glow 2s infinite;">Duel boshlanmoqda...</div>
+                        </div>
+
+                        <!-- STAGE 3: LIVE QUIZ -->
+                        <div class="m-stage" id="mStage3" style="position:absolute; inset:0; display:none; flex-direction:column;">
+                            <div style="background:rgba(245,158,11,0.08);padding:15px 20px;border-bottom:1px solid rgba(255,255,255,0.05);">
+                                <div style="display:flex;justify-content:space-between;align-items:center;">
+                                    <span style="font-size:0.75rem;color:var(--warning-400);font-weight:700;letter-spacing:1px;text-transform:uppercase;">⚔️ Final Dueli</span>
+                                    <span style="font-size:0.75rem;color:#10b981;font-weight:700;">Jasur vs Azizbek</span>
+                                </div>
+                                <p style="font-size:1.05rem;font-weight:800;color:var(--heading-color);margin-top:10px;line-height:1.4;">
+                                    Yorug'lik tezligi qanchaga teng?
+                                </p>
+                            </div>
+                            
+                            <div style="padding:15px 20px;display:flex;flex-direction:column;gap:10px;flex:1;">
+                                <div class="m-opt m-opt-wrong s3o"><span class="m-opt-letter">A</span>300,000 km/s</div>
+                                <div class="m-opt m-opt-correct s3o" style="box-shadow:0 0 20px rgba(16,185,129,0.2);transform:scale(1.02);"><span class="m-opt-letter m-opt-letter-correct">B</span>299,792 km/s <span class="m-opt-count" style="background:#10b981;color:#fff;">Jasur 🏆</span></div>
+                                <div class="m-opt m-opt-wrong s3o"><span class="m-opt-letter">C</span>150,000 km/s <span class="m-opt-count">Azizbek ❌</span></div>
+                            </div>
+                            
+                            <div style="padding:12px; background:rgba(0,0,0,0.2); text-align:center; border-top:1px solid rgba(255,255,255,0.05);">
+                                <span style="font-size:0.8rem;font-weight:700;color:var(--gray-300);">Turnir g'olibi aniqlandi!</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Auto cycle script for mockup -->
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    const stages = ['mStage0', 'mStage1', 'mStage2', 'mStage3'];
+                    const titles = ['AI Savol Generatori', 'AI Turnir — Lobby', 'Yarim Final Bracket', 'Jonli Final Duel'];
+                    let curr = 0;
+                    
+                    const mTitle = document.getElementById('mHeroTitle');
+                    
+                    function nextStage() {
+                        const oldEl = document.getElementById(stages[curr]);
+                        
+                        // Fade out old
+                        oldEl.style.opacity = '0';
+                        oldEl.style.transform = 'scale(0.95)';
+                        oldEl.style.transition = 'all 0.5s ease';
+                        
+                        setTimeout(() => {
+                            oldEl.style.display = 'none';
+                            
+                            curr = (curr + 1) % stages.length;
+                            const newEl = document.getElementById(stages[curr]);
+                            mTitle.style.opacity = '0'; // Title fade
+                            
+                            setTimeout(() => {
+                                mTitle.textContent = titles[curr];
+                                mTitle.style.transition = 'opacity 0.4s ease';
+                                mTitle.style.opacity = '1';
+                            }, 300);
+                            
+                            // Reset AI Stage internal view if needed
+                            if (curr === 0) {
+                                document.getElementById('aiGenLoading').style.display = 'block';
+                                document.getElementById('aiGenSuccess').style.display = 'none';
+                                setTimeout(() => {
+                                    document.getElementById('aiGenLoading').style.display = 'none';
+                                    document.getElementById('aiGenSuccess').style.display = 'block';
+                                }, 3000);
+                            }
+                            // Reset Lobby chips animation
+                            if (curr === 1) {
+                                const chips = document.querySelectorAll('#mStage1 .m-chip');
+                                chips.forEach(c => {
+                                    c.style.animation = 'none';
+                                    void c.offsetWidth;
+                                    c.style.animation = 'mPop 0.3s backwards 0.5s';
+                                });
+                            }
+                            
+                            newEl.style.opacity = '0';
+                            newEl.style.transform = 'scale(0.95)';
+                            newEl.style.display = 'flex';
+                            newEl.style.transition = 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                            
+                            setTimeout(() => {
+                                newEl.style.opacity = '1';
+                                newEl.style.transform = 'scale(1)';
+                            }, 50);
+                            
+                        }, 500);
+                    }
+                    
+                    // Initial Setup
+                    document.getElementById('mStage0').style.display = 'flex';
+                    document.getElementById('mStage0').style.opacity = '1';
+                    document.getElementById('mStage0').style.transform = 'scale(1)';
+                    setTimeout(() => {
+                        document.getElementById('aiGenLoading').style.display = 'none';
+                        document.getElementById('aiGenSuccess').style.display = 'block';
+                    }, 3000);
+                    
+                    // 5 seconds total per stage
+                    setInterval(nextStage, 5500); 
+                });
+            </script>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-header animate-fade-in-up">
+                <span class="section-badge">Imkoniyatlar</span>
+                <h2 class="section-title">AI kuchiga ega <span class="text-gradient">zamonaviy platforma</span></h2>
+            </div>
+
+            <div class="features-grid">
+                <!-- Feature 1: AI Team Quizzes -->
+                <div class="feature-card animate-fade-in-up delay-1" id="feature-ai-quiz">
+                    <div class="feature-icon" style="--icon-color: #10b981;">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            <path d="M12 2v2"></path>
+                            <path d="M12 18v2"></path>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Jamoaviy AI Viktorinalar</h3>
+                    <p class="feature-text">O'quvchilar real vaqtda QR-kod orqali kirib, AI tomonidan yaratilgan qiziqarli viktorinalarda guruh bo'lib bellashishadi.</p>
+                    <div class="feature-tags">
+                        <span class="badge badge-accent">Real-time</span>
+                        <span class="badge badge-success">Team Battle</span>
+                    </div>
+                </div>
+
+                <!-- Feature 2: QR Code Registration -->
+                <div class="feature-card animate-fade-in-up delay-2" id="feature-qr-reg">
+                    <div class="feature-icon" style="--icon-color: #ec4899;">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                            <path d="M7 7h.01M17 7h.01M17 17h.01M7 17h.01"></path>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">QR-kod orqali Bog'lanish</h3>
+                    <p class="feature-text">O'qituvchi yaratgan QR-kodni skanerlash orqali o'quvchilar avtomatik ravishda ushbu ustozning guruhiga a'zo bo'lishadi.</p>
+                    <div class="feature-tags">
+                        <span class="badge badge-error">Tezkor ulanish</span>
+                        <span class="badge badge-primary">Auto-group</span>
+                    </div>
+                </div>
+
+                <!-- Feature 3: Individual Test & QR -->
+                <div class="feature-card animate-fade-in-up delay-3" id="feature-individual-test">
+                    <div class="feature-icon" style="--icon-color: #3b82f6;">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 11l3 3L22 4" />
+                            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Individual Test va QR</h3>
+                    <p class="feature-text">Har bir o'quvchi uchun alohida variantlar va ularning natijalarini real vaqtda kuzatish tizimi.</p>
+                    <div class="feature-tags">
+                        <span class="badge badge-primary">QR-Checking</span>
+                        <span class="badge badge-accent">Auto-Grade</span>
+                    </div>
+                </div>
+
+                <!-- Feature 4: True/False Games -->
+                <div class="feature-card animate-fade-in-up delay-4" id="feature-tf-games">
+                    <div class="feature-icon" style="--icon-color: #ec4899;">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">True/False O'yinlari</h3>
+                    <p class="feature-text">Darsni qiziqarli qilish uchun tezkor savol-javoblar va noto'g'ri faktlarni aniqlash bellashuvi.</p>
+                    <div class="feature-tags">
+                        <span class="badge badge-error">Tezkor</span>
+                        <span class="badge badge-success">Interaktiv</span>
+                    </div>
+                </div>
+
+                <!-- Feature 5: Student VS AI Duel -->
+                <div class="feature-card animate-fade-in-up delay-5" id="feature-duel">
+                    <div class="feature-icon" style="--icon-color: #3b82f6;">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14.5 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V7.5L14.5 2z" />
+                            <polyline points="14 2 14 8 20 8" />
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Talaba VS AI Duel</h3>
+                    <p class="feature-text">Virtual arenada AI raqib bilan bilim jangi. O'quvchilar o'z darajalarini AI ga qarshi sinaydilar.</p>
+                    <div class="feature-tags">
+                        <span class="badge badge-primary">Battle Mode</span>
+                        <span class="badge badge-accent">AI Rival</span>
+                    </div>
+                </div>
+
+                <!-- Feature 6: Tournaments -->
+                <div class="feature-card animate-fade-in-up delay-6" id="feature-tournament">
+                    <div class="feature-icon" style="--icon-color: #60a5fa;">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+                            <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+                            <path d="M4 22h16"></path>
+                            <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path>
+                            <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path>
+                            <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">O'quvchilar Turniri</h3>
+                    <p class="feature-text">Bracket (to'r) tizimi bo'yicha mintaqaviy va guruhlararo yirik bilim musobaqalari.</p>
+                    <div class="feature-tags">
+                        <span class="badge badge-primary">Bracket System</span>
+                        <span class="badge badge-success">Champion</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section" id="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card animate-fade-in-up delay-1">
+                    <div class="stat-icon">⚡</div>
+                    <div class="stat-number" data-count="5">0</div>
+                    <div class="stat-unit">soniya</div>
+                    <div class="stat-label">AI viktorina yaratish</div>
+                </div>
+                <div class="stat-card animate-fade-in-up delay-2">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-number" data-count="97">0</div>
+                    <div class="stat-unit">%</div>
+                    <div class="stat-label">AI aniqlik darajasi</div>
+                </div>
+                <div class="stat-card animate-fade-in-up delay-3">
+                    <div class="stat-icon">📚</div>
+                    <div class="stat-number" data-count="30">0</div>
+                    <div class="stat-unit">+</div>
+                    <div class="stat-label">Soat/oyiga tejash</div>
+                </div>
+                <div class="stat-card animate-fade-in-up delay-4">
+                    <div class="stat-icon">🏆</div>
+                    <div class="stat-number" data-count="100">0</div>
+                    <div class="stat-unit">%</div>
+                    <div class="stat-label">Shaxsiy feedback</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing-section" id="pricing">
+        <div class="container">
+            <div class="section-header animate-fade-in-up" style="text-align:center; margin-bottom:50px;">
+                <div style="display:inline-block; padding:6px 16px; background:rgba(139,92,246,0.1); border:1px solid rgba(139,92,246,0.2); border-radius:20px; font-size:13px; font-weight:600; color:var(--primary-400); margin-bottom:12px;">💎 Kredit tizimi</div>
+                <h2 style="font-size:2.5rem; font-weight:800; color:var(--heading-color); margin-bottom:12px;">Shaffof <span class="text-gradient">tariflar</span></h2>
+                <p style="color:var(--gray-400); max-width:550px; margin:0 auto;">1 kredit = 1 ta AI operatsiya (savol yaratish, test tahlili, viktorina). Kredit tugagunicha to'lov yo'q.</p>
+            </div>
+
+            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:24px; max-width:960px; margin:0 auto;">
+
+                <!-- FREE -->
+                <div class="animate-fade-in-up delay-1" style="background:var(--glass-bg, rgba(255,255,255,0.03)); backdrop-filter:blur(20px); border:1px solid var(--glass-border, rgba(255,255,255,0.08)); border-radius:20px; padding:32px; position:relative; transition:transform 0.3s; display:flex; flex-direction:column;">
+                    <div style="font-size:13px; font-weight:600; color:var(--accent-400); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">Boshlang'ich</div>
+                    <div style="font-size:2.5rem; font-weight:900; color:var(--heading-color); line-height:1;">Bepul</div>
+                    <div style="color:var(--gray-400); font-size:13px; margin-top:4px;">Sinov va Manual rejim</div>
+                    <hr style="border:none; border-top:1px solid var(--glass-border, rgba(255,255,255,0.08)); margin:20px 0;">
+                    <ul style="list-style:none; font-size:14px; color:var(--gray-300); display:flex; flex-direction:column; gap:12px;">
+                        <li>📂 <strong style="color:var(--heading-color)">10 ta</strong> Word/TXT import</li>
+                        <li>✅ QR-kod generatsiya</li>
+                        <li>✅ 5 ta AI operatsiya</li>
+                        <li>✅ Jamoaviy viktorina (3 ta)</li>
+                        <li>❌ AI xato tahlili</li>
+                    </ul>
+                    <a href="pages/auth/login.html" style="display:block; margin-top:auto; padding-top:24px; text-align:center; padding:12px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:12px; color:var(--heading-color); font-weight:700; text-decoration:none; transition:all 0.3s;">Bepul boshlash</a>
+                </div>
+
+                <!-- STANDART -->
+                <div class="animate-fade-in-up delay-2" style="background:linear-gradient(135deg, rgba(59,130,246,0.08), rgba(139,92,246,0.08)); backdrop-filter:blur(20px); border:2px solid rgba(99,102,241,0.4); border-radius:20px; padding:32px; position:relative; transform:scale(1.04); box-shadow:0 20px 40px rgba(99,102,241,0.15); display:flex; flex-direction:column;">
+                    <div style="position:absolute; top:-12px; right:20px; background:linear-gradient(135deg,#6366f1,#8b5cf6); color:#fff; padding:4px 14px; border-radius:20px; font-size:12px; font-weight:700;">⭐ Tavsiya</div>
+                    <div style="font-size:13px; font-weight:600; color:var(--primary-400); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">Standart</div>
+                    <div style="display:flex; align-items:baseline; gap:4px;">
+                        <span style="font-size:2.5rem; font-weight:900; color:var(--heading-color); line-height:1;">25,000</span>
+                        <span style="color:var(--gray-400); font-size:14px;">so'm/oy</span>
+                    </div>
+                    <div style="color:var(--gray-400); font-size:13px; margin-top:4px;">100 ta AI limitgacha</div>
+                    <hr style="border:none; border-top:1px solid rgba(99,102,241,0.2); margin:20px 0;">
+                    <ul style="list-style:none; font-size:14px; color:var(--gray-300); display:flex; flex-direction:column; gap:12px;">
+                        <li>🤖 <strong style="color:var(--heading-color)">100</strong> AI operatsiya</li>
+                        <li>📂 <strong style="color:var(--heading-color)">100 ta</strong> Word/TXT import</li>
+                        <li>⚔️ AI Duel va Turnirlar</li>
+                        <li>✅ AI xato tahlili (Feedback)</li>
+                        <li>✅ Cheksiz jamoaviy darslar</li>
+                        <li>✅ Natijalar eksporti</li>
+                    </ul>
+                    <a href="pages/auth/login.html" style="display:block; margin-top:auto; padding-top:24px; text-align:center; padding:12px; background:linear-gradient(135deg,#6366f1,#8b5cf6); border:none; border-radius:12px; color:#fff; font-weight:700; text-decoration:none; transition:all 0.3s;">Tanlash</a>
+                </div>
+
+                <!-- PREMIUM -->
+                <div class="animate-fade-in-up delay-3" style="background:var(--glass-bg, rgba(255,255,255,0.03)); backdrop-filter:blur(20px); border:1px solid var(--glass-border, rgba(255,255,255,0.08)); border-radius:20px; padding:32px; position:relative; transition:transform 0.3s; display:flex; flex-direction:column;">
+                    <div style="font-size:13px; font-weight:600; color:var(--accent-400); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">Premium</div>
+                    <div style="display:flex; align-items:baseline; gap:4px;">
+                        <span style="font-size:2.5rem; font-weight:900; color:var(--heading-color); line-height:1;">50,000</span>
+                        <span style="color:var(--gray-400); font-size:14px;">so'm/oy</span>
+                    </div>
+                    <div style="color:var(--gray-400); font-size:13px; margin-top:4px;">Yirik hajmdagi loyihalar</div>
+                    <hr style="border:none; border-top:1px solid var(--glass-border, rgba(255,255,255,0.08)); margin:20px 0;">
+                    <ul style="list-style:none; font-size:14px; color:var(--gray-300); display:flex; flex-direction:column; gap:12px;">
+                        <li>🤖 <strong style="color:var(--heading-color)">1000</strong> AI operatsiya</li>
+                        <li>📂 <strong style="color:var(--heading-color)">1000 ta</strong> Word/TXT import</li>
+                        <li>✅ AI xato tahlili (Feedback)</li>
+                        <li>✅ Cheksiz jamoaviy darslar</li>
+                        <li>✅ Natijalar eksporti</li>
+                        <li>✅ Ustuvor texnik yordam</li>
+                        <li>✅ Shaxsiy brending (Logo)</li>
+                        <li>✅ API integratsiya cheksiz</li>
+                    </ul>
+                    <a href="pages/auth/login.html" style="display:block; margin-top:auto; padding-top:24px; text-align:center; padding:12px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:12px; color:var(--heading-color); font-weight:700; text-decoration:none; transition:all 0.3s;">Tanlash</a>
+                </div>
+
+            </div>
+
+            <div style="text-align:center; margin-top:30px; color:var(--gray-400); font-size:13px;">
+                💡 Maktab yoki OTM uchun maxsus tariflar — <a href="#" style="color:var(--primary-400); text-decoration:underline;">biz bilan bog'laning</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-card animate-fade-in-up">
+                <div class="cta-bg-effect"></div>
+                <h2 class="cta-title">Hoziroq <span class="text-gradient">boshlang!</span></h2>
+                <p class="cta-text">O'qituvchi yoki talaba sifatida ro'yxatdan o'ting va AI yordamchingizni ishga
+                    tushiring.</p>
+                <p class="hero-description slide-up">
+                Talabalar bilimini AI orqali baholash, real vaqtda qiziqarli viktorinalar va shaxsiy o'sish monitoringi — hamma narsa bitta aqlli tizimda.
+            </p>
+                <div class="cta-actions">
+                    <a href="pages/auth/login.html" class="btn btn-primary btn-lg">
+                        O'qituvchi bo'lib kirish
+                    </a>
+                    <a href="pages/student/join.html" class="btn btn-secondary btn-lg" style="margin-left: 10px;">
+                        Darsga qo'shilish
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="nav-logo">
+                        <div class="logo-icon">
+                            <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                                <rect width="32" height="32" rx="8" fill="url(#logo-grad2)" />
+                                <path d="M8 20L16 10L24 20" stroke="white" stroke-width="2.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <defs>
+                                    <linearGradient id="logo-grad2" x1="0" y1="0" x2="32" y2="32">
+                                        <stop stop-color="#3b82f6" />
+                                        <stop offset="1" stop-color="#8b5cf6" />
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </div>
+                        <span class="logo-text">Bahola <span class="text-gradient">Ai</span></span>
+                    </div>
+                    <p class="footer-desc">AI yordamida ta'lim sifatini oshirish platformasi</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#features">Imkoniyatlar</a>
+                    <a href="#pricing">Tariflar</a>
+                    <a href="pages/auth/login.html">Kirish</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Bahola Ai. AI Hackathon loyihasi.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/landing.js?v=5.0"></script>
+</body>
+
+</html>

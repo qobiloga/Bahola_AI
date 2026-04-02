@@ -1,0 +1,23 @@
+# Open Server Panel
+.osp/
+
+# Configuration files (contains API keys and DB credentials)
+api/config/openai.php
+api/config/database.php
+api/config/telegram.php
+
+# PHP errors and logs
+error_log
+php_errors.log
+
+# Uploads directory (user content)
+uploads/*
+!uploads/.gitkeep
+
+# Backup and temp files
+*.zip
+*.rar
+*.7z
+*.tmp
+.DS_Store
+Thumbs.db

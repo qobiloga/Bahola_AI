@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Bahola Ai WebApp</title>
+    <!-- Telegram WebApp SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="assets/css/webapp.css">
+</head>
+<body>
+    <div class="container role-screen" id="appBody" style="display: none;">
+        <div class="animate-up">
+            <h1 class="text-gradient" style="font-size: 32px;">Bahola <span style="color: var(--button-color);">Ai</span></h1>
+            <p class="text-hint">Xush kelibsiz! Marhamat, rolingizni tanlang:</p>
+            
+            <div class="role-options">
+                <div class="role-card" onclick="selectRole('teacher')">
+                    <div class="icon">👨‍🏫</div>
+                    <h3>O'qituvchi</h3>
+                    <p class="text-hint">Dars jadvali, testlarni tekshirish va AI yordamchi</p>
+                </div>
+                
+                <div class="role-card" onclick="selectRole('student')">
+                    <div class="icon">🎓</div>
+                    <h3>O'quvchi</h3>
+                    <p class="text-hint">Testlarni yechish, natijalar va tavsiyalar</p>
+                </div>
+            </div>
+            
+            <div style="margin-top: 40px;">
+                <p class="text-hint" style="font-size: 12px; opacity: 0.7;">
+                    © 2026 Bahola Ai — Smart Education Platform
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/webapp.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentRole = WebAppHelper.getRole();
+            
+            if (currentRole === 'teacher') {
+                window.location.href = 'teacher/dashboard.html';
+                return;
+            } else if (currentRole === 'student') {
+                window.location.href = 'student/dashboard.html';
+                return;
+            }
+            
+            // If no role, show the selector
+            document.getElementById('appBody').style.display = 'flex';
+        });
+
+        function selectRole(role) {
+            WebAppHelper.haptic('medium');
+            WebAppHelper.saveRole(role);
+            
+            if (role === 'teacher') {
+                WebAppHelper.to('teacher/dashboard.html');
+            } else {
+                WebAppHelper.to('student/dashboard.html');
+            }
+        }
+    </script>
+</body>
+</html>

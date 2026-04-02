@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O'qituvchi paneli — Bahola Ai</title>
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🎓</text></svg>">
+    <script src="../../assets/js/theme.js"></script>
+</head>
+
+<body>
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="../../index.html" class="sidebar-logo">
+                    <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                        <rect width="32" height="32" rx="8" fill="url(#slg)" />
+                        <path d="M8 20L16 10L24 20" stroke="white" stroke-width="2.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <defs>
+                            <linearGradient id="slg" x1="0" y1="0" x2="32" y2="32">
+                                <stop stop-color="#3b82f6" />
+                                <stop offset="1" stop-color="#8b5cf6" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    Bahola <span class="text-gradient">Ai</span>
+                </a>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <a href="dashboard.html" class="sidebar-link active">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="7" height="7" />
+                            <rect x="14" y="3" width="7" height="7" />
+                            <rect x="14" y="14" width="7" height="7" />
+                            <rect x="3" y="14" width="7" height="7" />
+                        </svg>
+                        Asosiy
+                    </a>
+                    <a href="quiz-generator.html" class="sidebar-link">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"></path>
+                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        </svg>
+                        Jamoaviy AI Viktorina yaratish
+                    </a>
+                    <a href="test-creator.html" class="sidebar-link">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M9 11l3 3L22 4" />
+                            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
+                        </svg>
+                        Individual test o'quvchilarga
+                    </a>
+                    <a href="tf-creator.html" class="sidebar-link">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                        True/False o'yin yaratish
+                    </a>
+                    <a href="duel-creator.html" class="sidebar-link" style="color: var(--primary-400);">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M14.5 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V7.5L14.5 2z" />
+                            <polyline points="14 2 14 8 20 8" />
+                        </svg>
+                        Talaba VS AI Duel
+                    </a>
+                    <a href="tournament-creator.html" class="sidebar-link" style="color: #60a5fa;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+                            <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+                            <path d="M4 22h16"></path>
+                            <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path>
+                            <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path>
+                            <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
+                        </svg>
+                        O'quvchilar Turniri
+                    </a>
+                    <div style="border-top:1px solid rgba(255,255,255,0.05); margin: 15px 0; padding-top:15px;"></div>
+                    
+                    <a href="statistics.html" class="sidebar-link">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+                        </svg>
+                        Statistika
+                    </a>
+                    <a href="tournament-history.html" class="sidebar-link">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                        </svg>
+                        O'tkazilgan Turnirlar tarixi
+                    </a>
+                </div>
+            </nav>
+
+            <div class="sidebar-user">
+                <div class="user-avatar" id="userAvatar">SR</div>
+                <div class="user-info">
+                    <div class="user-name" id="userName">Sardor Raximov</div>
+                    <div class="user-role">O'qituvchi</div>
+                </div>
+                <button class="logout-btn" id="logoutBtn" title="Chiqish">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+                        <polyline points="16,17 21,12 16,7" />
+                        <line x1="21" y1="12" x2="9" y2="12" />
+                    </svg>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Top Bar -->
+            <div class="topbar">
+                <div class="topbar-left">
+                    <button class="sidebar-toggle" id="sidebarToggle">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <line x1="3" y1="12" x2="21" y2="12" />
+                            <line x1="3" y1="6" x2="21" y2="6" />
+                            <line x1="3" y1="18" x2="21" y2="18" />
+                        </svg>
+                    </button>
+                    <div class="topbar-title">
+                        <h2>Dashboard</h2>
+                        <p>Xush kelibsiz, <span id="topbarName">Sardor</span>! 👋</p>
+                    </div>
+                </div>
+                <div class="topbar-right" style="display:flex; align-items:center; gap:10px;">
+                    <button id="themeToggle" class="btn btn-icon theme-toggle-btn" aria-label="Toggle Theme"
+                        style="color: var(--heading-color);">
+                        <svg class="sun-icon" style="display:none;" width="20" height="20" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </button>
+                    <button class="notification-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                            <path d="M13.73 21a2 2 0 01-3.46 0" />
+                        </svg>
+                        <span class="notification-dot"></span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Dashboard Content -->
+            <div class="dashboard-content">
+                <!-- Stats Row -->
+                <div class="stats-row">
+                    <div class="stat-widget animate-fade-in-up delay-1">
+                        <div class="stat-widget-icon blue">📝</div>
+                        <div class="stat-widget-info">
+                            <div class="stat-widget-value" id="statTotalTests">...</div>
+                            <div class="stat-widget-label">Jami testlar</div>
+                        </div>
+                    </div>
+                    <div class="stat-widget animate-fade-in-up delay-2">
+                        <div class="stat-widget-icon green">📄</div>
+                        <div class="stat-widget-info">
+                            <div class="stat-widget-value" id="statCheckedPapers">...</div>
+                            <div class="stat-widget-label">Tekshirilgan ishlar</div>
+                        </div>
+                    </div>
+                    <div class="stat-widget animate-fade-in-up delay-3">
+                        <div class="stat-widget-icon amber">👥</div>
+                        <div class="stat-widget-info">
+                            <div class="stat-widget-value" id="statTotalStudents">...</div>
+                            <div class="stat-widget-label">Umumiy talabalar</div>
+                        </div>
+                    </div>
+                    <div class="stat-widget animate-fade-in-up delay-4">
+                        <div class="stat-widget-icon rose">⏰</div>
+                        <div class="stat-widget-info">
+                            <div class="stat-widget-value"><span id="statTimeSaved">...</span><span
+                                    style="font-size:var(--text-sm);color:var(--gray-400)">soat</span></div>
+                            <div class="stat-widget-label">Tejangan vaqt</div>
+                            <div class="stat-widget-change up">AI yordamida</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Main Grid -->
+            <div class="dashboard-grid">
+                <!-- Recent Tests -->
+                <div class="dashboard-card animate-fade-in-up delay-2">
+                    <div class="dashboard-card-header">
+                        <h3 class="dashboard-card-title">📋 So'nggi testlar</h3>
+                        <a href="tests.html" class="btn btn-sm btn-secondary">Barchasi</a>
+                    </div>
+                    <div class="dashboard-card-body" style="padding:0;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Test nomi</th>
+                                    <th>Fan</th>
+                                    <th>Topshirdi</th>
+                                    <th>O'rtacha</th>
+                                    <th>Holat</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentTestsBody">
+                                <tr>
+                                    <td colspan="5" style="text-align:center;">Yuklanmoqda...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="dashboard-card animate-fade-in-up delay-3">
+                    <div class="dashboard-card-header">
+                        <h3 class="dashboard-card-title">🔔 So'nggi faoliyat</h3>
+                    </div>
+                    <div class="dashboard-card-body">
+                        <div class="activity-list">
+                            <div class="activity-item">
+                                <span class="activity-dot green"></span>
+                                <div>
+                                    <div class="activity-text"><strong>AI</strong> 15 ta Duel natijasini tahlil qildi</div>
+                                    <div class="activity-time">5 daqiqa oldin</div>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <span class="activity-dot blue"></span>
+                                <div>
+                                    <div class="activity-text"><strong>Jasur K.</strong> "Informatika" Duelida AI ustidan g'alaba qozondi</div>
+                                    <div class="activity-time">12 daqiqa oldin</div>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <span class="activity-dot amber"></span>
+                                <div>
+                                    <div class="activity-text"><strong>Matematika</strong> Turniri bracket bosqichi yakunlandi</div>
+                                    <div class="activity-time">30 daqiqa oldin</div>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <span class="activity-dot green"></span>
+                                <div>
+                                    <div class="activity-text"><strong>True/False</strong> o'yini: 85% talaba muvaffaqiyatli topshirdi</div>
+                                    <div class="activity-time">1 soat oldin</div>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <span class="activity-dot rose"></span>
+                                <div>
+                                    <div class="activity-text"><strong>AI Tahlili:</strong> CS-21 guruhida 5 ta talaba trigonometriyadan zaif</div>
+                                    <div class="activity-time">2 soat oldin</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Tournament / Duel Stats -->
+            <div class="dashboard-card animate-fade-in-up delay-4" style="margin-bottom: var(--space-6);">
+                <div class="dashboard-card-header">
+                    <h3 class="dashboard-card-title">⚔️ So'nggi Duel va Turnir natijalari</h3>
+                    <a href="tournament-creator.html" class="btn btn-sm btn-primary">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 20h9" /><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z" />
+                        </svg>
+                        Yangi Turnir
+                    </a>
+                </div>
+                <div class="dashboard-card-body" style="padding:0;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>O'quvchi / Guruh</th>
+                                <th>Mavzu</th>
+                                <th>Natija</th>
+                                <th>Vaqt</th>
+                                <th>AI Feedback</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tournStatsBody">
+                            <tr>
+                                <td><strong>Anvar S.</strong></td>
+                                <td>Matematika Duel</td>
+                                <td>8/10</td>
+                                <td>02:45</td>
+                                <td><span class="badge badge-accent">A'lo</span></td>
+                                <td><span class="badge badge-success">G'alaba</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>CS-20 Guruh</strong></td>
+                                <td>Fizika Turniri</td>
+                                <td>43 ball</td>
+                                <td>25:00</td>
+                                <td><span class="badge badge-accent">O'rtacha</span></td>
+                                <td><span class="badge badge-primary">Yakunlandi</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Malika O.</strong></td>
+                                <td>Ingliz tili (TF)</td>
+                                <td>15/15</td>
+                                <td>01:20</td>
+                                <td><span class="badge badge-accent">Master</span></td>
+                                <td><span class="badge badge-success">Top</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- AI Insights -->
+            <div class="dashboard-card animate-fade-in-up delay-5">
+                <div class="dashboard-card-header">
+                    <h3 class="dashboard-card-title">🧠 AI Tahlillar (Proyeksiya)</h3>
+                </div>
+                <div class="dashboard-card-body">
+                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap:var(--space-4);">
+                        <div style="padding:var(--space-4); background:rgba(244,63,94,0.08); border-left:3px solid var(--error-500); border-radius:var(--radius-md);">
+                            <div style="font-weight:700; color:var(--heading-color); margin-bottom:var(--space-2);">⚠️ Turnir trendi</div>
+                            <div style="font-size:var(--text-sm); color:var(--gray-400);">CS-21 guruhida <strong style="color:var(--error-400)">Mantiqiy amallar</strong> mavzusida o'quvchilar duelda yutqazishmoqda. Mavzuni qayta ko'rib chiqish tavsiya etiladi.</div>
+                        </div>
+                        <div style="padding:var(--space-4); background:rgba(16,185,129,0.08); border-left:3px solid var(--accent-500); border-radius:var(--radius-md);">
+                            <div style="font-weight:700; color:var(--heading-color); margin-bottom:var(--space-2);">✅ Duel tahlili</div>
+                            <div style="font-size:var(--text-sm); color:var(--gray-400);">O'quvchilarning <strong style="color:var(--accent-400)">90% qismi</strong> AI ga qarshi kurashishda yuqori faollik ko'rsatmoqda. Bu darsga bo'lgan qiziqishni 2 barobar oshirdi.</div>
+                        </div>
+                        <div style="padding:var(--space-4); background:rgba(59,130,246,0.08); border-left:3px solid var(--primary-500); border-radius:var(--radius-md);">
+                            <div style="font-weight:700; color:var(--heading-color); margin-bottom:var(--space-2);">📊 Tejangan vaqt (Bu hafta)</div>
+                            <div style="font-size:var(--text-sm); color:var(--gray-400);">AI orqali <strong style="color:var(--primary-400)">120 ta test</strong> va duel tahlili avtomatik bajarildi. Bu sizning <strong style="color:var(--primary-400)">~15 soat</strong> vaqtingizni tejadi.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    </main>
+    </div>
+
+    <script>
+        // Load user data
+        const user = JSON.parse(localStorage.getItem('smartedu_user') || '{}');
+        if (user.name) {
+            document.getElementById('userName').textContent = user.name;
+            document.getElementById('topbarName').textContent = user.name.split(' ')[0];
+            document.getElementById('userAvatar').textContent = user.name.split(' ').map(n => n[0]).join('').toUpperCase();
+        }
+
+        // Sidebar toggle
+        document.getElementById('sidebarToggle')?.addEventListener('click', () => {
+            document.getElementById('sidebar').classList.toggle('open');
+        });
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            localStorage.removeItem('smartedu_user');
+            window.location.href = '../auth/login.html';
+        });
+
+        // Auth check
+        if (!user.id) {
+            window.location.href = '../auth/login.html';
+        } else {
+            loadDashboardData();
+        }
+
+        async function loadDashboardData() {
+            try {
+                const res = await fetch(`../../api/teacher/dashboard.php?teacher_id=${user.id || 1}`);
+                const data = await res.json();
+
+                if (data.success) {
+                    // Update Stats
+                    document.getElementById('statTotalTests').textContent = data.stats.total_tests;
+                    document.getElementById('statCheckedPapers').textContent = data.stats.checked_papers;
+                    document.getElementById('statTotalStudents').textContent = data.stats.total_students;
+                    document.getElementById('statTimeSaved').textContent = data.stats.time_saved_hours + ' ';
+
+                    // Update Recent Tests
+                    const testsBody = document.getElementById('recentTestsBody');
+                    if (data.recent_tests.length > 0) {
+                        testsBody.innerHTML = data.recent_tests.map(t => `
+                            <tr>
+                                <td><strong style="color:var(--heading-color)">${t.title}</strong></td>
+                                <td>${t.subject}</td>
+                                <td>${t.attempts_count} marta</td>
+                                <td><span class="badge badge-accent">${t.avg_score ? t.avg_score + '%' : '—'}</span></td>
+                                <td><span class="badge badge-primary">${t.status}</span></td>
+                            </tr>
+                        `).join('');
+                    } else {
+                        testsBody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding: 20px;">Testlar mavjud emas</td></tr>`;
+                    }
+                }
+            } catch (err) {
+                console.error("Dashboard error:", err);
+            }
+        }
+    </script>
+</body>
+
+</html>
