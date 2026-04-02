@@ -36,13 +36,13 @@ Har xil ehtiyojlar uchun moslashtirilgan tarif rejalari.
 
 1. Repozitoriyani klonlang:
    ```bash
-   git clone https://github.com/USERNAME/smarteducation.git
+   git clone https://github.com/qobiloga/Bahola_AI.git
    ```
 2. Ma'lumotlar bazasini yarating va `database/db.sql` faylini import qiling.
 3. `api/config/` papkasidagi shablonlardan foydalanib sozlamalarni kiriting:
    - `database.sample.php` -> `database.php`
    - `openai.sample.php` -> `openai.php`
-4. Serverni (OpenServer yoki Apache/Nginx) `smarteducation.local` domeniga sozlang.
+4. Serverni (OpenServer yoki Apache/Nginx) `bahola-ai.local` domeniga sozlang.
 
 ---
 **Muallif:** Bahola Ai Team
