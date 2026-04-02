@@ -1,5 +1,7 @@
 # Bahola Ai — Zamonaviy Ta'lim Platformasi 🚀
 
+[📄 Loyiha taqdimotini ko'rish (PDF)](Presentation.pdf)
+
 **Bahola Ai** — o'qituvchilar va talabalar uchun mo'ljallangan, sun'iy intellekt (AI) asosida ishlovchi interaktiv test va viktoriya platformasi. Ushbu loyiha dars jarayonini qiziqarli o'yin (gamification) shakliga keltirish va bilimlarni real vaqt rejimida baholash uchun yaratilgan.
 
 ## ✨ Asosiy Imkoniyatlar
